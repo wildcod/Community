@@ -1,4 +1,4 @@
-package com.client;
+package com.community.app;
 
 import com.facebook.react.ReactActivity;
 

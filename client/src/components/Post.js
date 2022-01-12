@@ -85,6 +85,12 @@ const Post = ({
     setIsLoaading(false)
   }
 
+  const handleChatNavigation = () => {
+    console.log('userInfo', authState.userInfo)
+    if (authState && author.id === authState.userInfo.id) return
+    navigation.navigate('Chat', { author })
+  }
+
   return (
     <View
       as={SafeAreaView}
@@ -98,7 +104,8 @@ const Post = ({
           <Text style={[styles.regularFont, { color: colors.text }]}>{category} </Text>
           <Text
             style={[styles.italicFont, { color: colors.blue }]}
-            onPress={() => navigation.navigate('User', { username: author.username })}
+            // onPress={() => navigation.navigate('User', { username: author.username })}
+            onPress={handleChatNavigation}
           >
             @{author?.username} ·{' '}
           </Text>

@@ -20,6 +20,7 @@ import UserScreen from './views/User'
 import SignModal from './views/SignModal'
 import SignInScreen from './views/SignIn'
 import SignUpScreen from './views/SignUp'
+import ChatScreen from './views/Chat'
 
 const Tab = createBottomTabNavigator()
 const HomeStack = createStackNavigator()
@@ -70,6 +71,7 @@ function HomeScreens() {
           headerTitleAlign: 'center'
         })}
       />
+      <HomeStack.Screen name="Chat" component={ChatScreen} />
     </HomeStack.Navigator>
   )
 }
