@@ -13,4 +13,6 @@ app.use(bodyParser.json());
 
 require('./routes.js')(app);
 
+app.listen(5000, () => console.log('listening on 5000'));
+
 module.exports = app;

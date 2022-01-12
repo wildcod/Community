@@ -9,7 +9,7 @@ const clearDb = (done) => {
 
 beforeEach(async (done) => {
   if (mongoose.connection.readyState === 0) {
-    await connect(`${config.db.test}-${process.env.TEST_SUITE}`);
+    await connect(`${config.db.test}-${TEST_SUITE}`);
   }
   return clearDb(done);
 });
