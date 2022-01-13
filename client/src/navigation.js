@@ -21,6 +21,7 @@ import SignModal from './views/SignModal'
 import SignInScreen from './views/SignIn'
 import SignUpScreen from './views/SignUp'
 import ChatScreen from './views/Chat'
+import SearchScreen from './views/search'
 
 const Tab = createBottomTabNavigator()
 const HomeStack = createStackNavigator()
@@ -85,6 +86,7 @@ function MyTabs() {
       }}
     >
       <Tab.Screen name="Home" component={HomeScreens} />
+      <Tab.Screen name="Search" component={SearchScreen} />
       <Tab.Screen name="CreatePost" component={CreatePostScreen} />
       <Tab.Screen name="User" component={UserScreen} />
     </Tab.Navigator>

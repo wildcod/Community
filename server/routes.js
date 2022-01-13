@@ -8,6 +8,9 @@ const commentAuth = require('./middlewares/commentAuth');
 
 const router = require('express').Router();
 
+//Search
+router.get('/user/search/:q', users.search);
+
 //Authentication
 router.post('/signup', users.validate, users.signup);
 router.post('/authenticate', users.validate, users.authenticate);

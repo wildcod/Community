@@ -47,7 +47,7 @@ exports.signup = async (req, res) => {
       const userInfo = {
         username,
         role,
-        id,
+        id
       };
 
       return res.json({
@@ -107,6 +107,20 @@ exports.authenticate = async (req, res) => {
       });
     }
   } catch (error) {
+    return res.status(400).json({
+      message: 'Something went wrong.'
+    });
+  }
+};
+
+exports.search = async (req, res) => {
+  try {
+    const { q } = req.params;
+    console.log('function hit', q);
+    const users = await User.find({ username: { $regex: new RegExp(q) } });
+    console.log('users', users);
+    res.send({ users });
+  } catch (err) {
     return res.status(400).json({
       message: 'Something went wrong.'
     });
