@@ -1,9 +1,9 @@
 import firestore from '@react-native-firebase/firestore'
 
-export const getChatMessages = async (userId, remoteId) => {
+export const getChatMessages = async id => {
   const snapshot = await firestore()
     .collection('chat')
-    .doc(`${userId}-${remoteId}`)
+    .doc(id)
     .collection('messages')
     .orderBy('createdAt', 'desc')
     .get()
@@ -15,12 +15,10 @@ export const getChatMessages = async (userId, remoteId) => {
   }))
 }
 
-export const updateMessages = async (userId, remoteId, message) => {
+export const updateMessages = async (id, message) => {
   return await firestore()
     .collection('chat')
-    .doc(`${userId}-${remoteId}`)
-    .collection('messages')
-    .doc(`${userId}-${remoteId}`)
+    .doc(id)
     .collection('messages')
     .add(message)
 }

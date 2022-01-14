@@ -88,7 +88,7 @@ const Post = ({
   const handleChatNavigation = () => {
     console.log('userInfo', authState.userInfo)
     if (authState && author.id === authState.userInfo.id) return
-    navigation.navigate('Chat', { author })
+    navigation.navigate('Chat', { remoteUser: author })
   }
 
   return (

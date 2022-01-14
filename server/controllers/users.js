@@ -80,6 +80,8 @@ exports.authenticate = async (req, res) => {
       username: username.toLowerCase()
     });
 
+    console.log('user', user);
+
     if (!user) {
       return res.status(403).json({
         message: 'Wrong username or password.'
@@ -92,13 +94,13 @@ exports.authenticate = async (req, res) => {
       const token = createToken(user);
       const decodedToken = jwtDecode(token);
       const expiresAt = decodedToken.exp;
-      const { username, role, id } = user;
-      const userInfo = { username, role, id };
+      // const { username, role, id } = user;
+      // const userInfo = { username, role, id };
 
       res.json({
         message: 'Authentication successful!',
         token,
-        userInfo,
+        userInfo: user,
         expiresAt
       });
     } else {
@@ -116,11 +118,137 @@ exports.authenticate = async (req, res) => {
 exports.search = async (req, res) => {
   try {
     const { q } = req.params;
-    console.log('function hit', q);
     const users = await User.find({ username: { $regex: new RegExp(q) } });
-    console.log('users', users);
     res.send({ users });
   } catch (err) {
+    return res.status(400).json({
+      message: 'Something went wrong.'
+    });
+  }
+};
+
+exports.sendFriendRequest = async (req, res) => {
+  try {
+    const { userId, userToFriendId } = await req.query;
+    console.log('userId', userId, userToFriendId);
+    const user = await User.findById(userToFriendId);
+    console.log('fond user', user);
+    if (!user)
+      return res.status(403).json({
+        message: 'User not found'
+      });
+    user.requests ? user.requests.push(userId) : (user.requests = [userId]);
+    console.log('user after request', user);
+    await user.save();
+    return res.json({
+      message: 'Follow request sent',
+      status: 'success'
+    });
+  } catch (error) {
+    return res.status(400).json({
+      message: 'Something went wrong.'
+    });
+  }
+};
+
+exports.declineRequest = async (req, res) => {
+  try {
+    const { userId, userToDeclineId } = await req.query;
+    const user = await User.findById(userId);
+    if (!user)
+      return res.status(403).json({
+        message: 'User not found'
+      });
+    const index = user.requests.findIndex((id) => id === userToDeclineId);
+    user.requests.splice(index, 1);
+    await user.save();
+    return res.json({
+      message: 'Follow request sent',
+      user
+    });
+  } catch (error) {
+    return res.status(400).json({
+      message: 'Something went wrong.'
+    });
+  }
+};
+
+exports.acceptRequest = async (req, res) => {
+  try {
+    const { userId, userToAcceptId } = await req.query;
+    const user = await User.findById(userId);
+    const remoteUser = await User.findById(userToAcceptId);
+    if (!user)
+      return res.status(403).json({
+        message: 'User not found'
+      });
+    const index = user.requests.findIndex((id) => id === userToAcceptId);
+    user.requests.splice(index, 1);
+    user.followers
+      ? user.followers.push(userToAcceptId)
+      : (user.followers = [userToAcceptId]);
+    remoteUser.following
+      ? remoteUser.following.push(userToFollowId)
+      : (remoteUser.following = [userToFollowId]);
+    await user.save();
+    await remoteUser.save();
+    return res.json({
+      message: 'Follow request sent',
+      user
+    });
+  } catch (error) {
+    return res.status(400).json({
+      message: 'Something went wrong.'
+    });
+  }
+};
+
+exports.unfriend = async (req, res) => {
+  try {
+    const { userId, userToUnfriendId } = await req.query;
+    const remoteUser = await User.findById(userToUnfriendId);
+    const localUser = await User.findById(userId);
+    if (!remoteUser)
+      return res.status(403).json({
+        message: 'User to follow not found'
+      });
+    if (!localUser)
+      return res.status(403).json({
+        message: 'User not found'
+      });
+
+    const remoteIndex = remoteUser.followers.findIndex((id) => id === userId);
+    remoteUser.followers.splice(remoteIndex, 1);
+
+    const localIndex = remoteUser.followers.findIndex(
+      (id) => id === userToUnfriendId
+    );
+    localUser.following.splice(localIndex, 1);
+    await localUser.save();
+    await remoteUser.save();
+    return res.json({
+      message: 'User followed successfully',
+      user: localUser
+    });
+  } catch (error) {
+    return res.status(400).json({
+      message: 'Something went wrong.'
+    });
+  }
+};
+
+exports.getUser = async (req, res) => {
+  try {
+    const { id } = await req.params;
+    const user = await User.findById(id);
+    if (!user)
+      return res.status(403).json({
+        message: 'User not found'
+      });
+    return res.json({
+      user
+    });
+  } catch (error) {
     return res.status(400).json({
       message: 'Something went wrong.'
     });
