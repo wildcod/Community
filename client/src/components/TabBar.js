@@ -3,7 +3,7 @@ import { View, TouchableOpacity, StyleSheet } from 'react-native'
 import { useTheme } from '@react-navigation/native'
 
 import { AuthContext } from '../context/authContext'
-import { Home, PlusSquare, User, Search } from './icons/index'
+import { Home, PlusSquare, User, Friends } from './icons/index'
 
 function TabBar({ state, descriptors, navigation }) {
   const { authState } = React.useContext(AuthContext)
@@ -48,7 +48,7 @@ function TabBar({ state, descriptors, navigation }) {
         return (
           <TouchableOpacity key={route.key} onPress={onPress} style={styles.button}>
             {label === 'Home' && <Home color={isFocused ? colors.blue : colors.text} />}
-            {label === 'Search' && <Search color={isFocused ? colors.blue : colors.text} />}
+            {label === 'Friends' && <Friends color={isFocused ? colors.blue : colors.text} />}
             {label === 'CreatePost' && <PlusSquare color={isFocused ? colors.blue : colors.text} />}
             {label === 'User' && <User color={isFocused ? colors.blue : colors.text} />}
           </TouchableOpacity>

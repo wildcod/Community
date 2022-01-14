@@ -255,6 +255,18 @@ exports.getUser = async (req, res) => {
   }
 };
 
+exports.getRequests = async (req, res) => {
+  try {
+    const { ids } = await req.query;
+    const users = await User.find({ _id: { $in: ids } });
+    console.log('users', users);
+  } catch (error) {
+    return res.status(400).json({
+      message: 'Something went wrong.'
+    });
+  }
+};
+
 exports.validate = [
   body('username')
     .exists()
