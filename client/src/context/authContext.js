@@ -1,5 +1,6 @@
 import React from 'react'
 import AsyncStorage from '@react-native-community/async-storage'
+import instanceAxios from '../utils/fetcher'
 
 const AuthContext = React.createContext()
 const { Provider } = AuthContext
@@ -21,11 +22,13 @@ const AuthProvider = ({ children }) => {
       if (new Date().getTime() / 1000 > JSON.parse(expiresAt)) {
         signOut()
       }
+      const response = await instanceAxios.get(`user/${JSON.parse(userInfo).id}`)
+      const userData = await response.data
 
       setAuthState({
         token,
         expiresAt,
-        userInfo: userInfo ? JSON.parse(userInfo) : {}
+        userInfo: userInfo ? userData.user : {}
       })
     }
 
@@ -56,7 +59,7 @@ const AuthProvider = ({ children }) => {
     setAuthState({ token: null, expiresAt: null, userInfo: {} })
   }
 
-  return <Provider value={{ authState, setStorage, signOut }}>{children}</Provider>
+  return <Provider value={{ authState, setAuthState, setStorage, signOut }}>{children}</Provider>
 }
 
 export { AuthContext, AuthProvider }

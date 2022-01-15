@@ -1,7 +1,7 @@
 import firestore from '@react-native-firebase/firestore'
 import { useTheme } from '@react-navigation/native'
 import React, { useCallback, useContext, useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { StatusBar } from 'react-native'
+import { ActivityIndicator, StatusBar, View } from 'react-native'
 import { GiftedChat } from 'react-native-gifted-chat'
 import { AuthContext } from '../context/authContext'
 import { updateMessages } from '../utils/firebase'
@@ -81,12 +81,19 @@ export default function Chat({ route, navigation }) {
     await updateMessages(sortedId, messages[0])
   }, [])
 
+  const renderLoading = () => (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <ActivityIndicator color={colors.primary} size="small" />
+    </View>
+  )
+
   return (
     <>
       <StatusBar backgroundColor={colors.bgColor} />
       <GiftedChat
         messages={messages}
         isLoadingEarlier={loading}
+        renderLoading={renderLoading}
         onSend={messages => onSend(messages)}
         user={{
           _id: authState.userInfo.id,

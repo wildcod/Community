@@ -8,16 +8,17 @@ const commentAuth = require('./middlewares/commentAuth');
 
 const router = require('express').Router();
 
-router.get('/user/id/:id', users.getUser);
+router.get('/user/:id', users.getUser);
 
 //Search
 router.get('/user/search/:q', users.search);
 
-//Follows
+//Friends
 router.post('/user/request', users.sendFriendRequest);
 router.post('/user/unfriend', users.unfriend);
 router.post('/user/request/accept', users.acceptRequest);
 router.post('/user/request/decline', users.declineRequest);
+router.get('/users', users.getUsers);
 
 //Authentication
 router.post('/signup', users.validate, users.signup);

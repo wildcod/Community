@@ -163,11 +163,13 @@ exports.declineRequest = async (req, res) => {
     user.requests.splice(index, 1);
     await user.save();
     return res.json({
-      message: 'Follow request sent',
+      message: 'Friend request declined',
+      status: 'success',
       user
     });
   } catch (error) {
     return res.status(400).json({
+      status: 'error',
       message: 'Something went wrong.'
     });
   }
@@ -184,20 +186,26 @@ exports.acceptRequest = async (req, res) => {
       });
     const index = user.requests.findIndex((id) => id === userToAcceptId);
     user.requests.splice(index, 1);
-    user.followers
-      ? user.followers.push(userToAcceptId)
-      : (user.followers = [userToAcceptId]);
-    remoteUser.following
-      ? remoteUser.following.push(userToFollowId)
-      : (remoteUser.following = [userToFollowId]);
+    user.friends
+      ? user.friends.push(userToAcceptId)
+      : (user.friends = [userToAcceptId]);
+    remoteUser.friends
+      ? remoteUser.friends.push(userId)
+      : (remoteUser.friends = [userId]);
+    const remoteIndex = remoteUser.requests.findIndex((id) => id === userId);
+    if (remoteIndex !== -1) {
+      remoteUser.requests.splice(remoteIndex, 1);
+    }
     await user.save();
     await remoteUser.save();
     return res.json({
-      message: 'Follow request sent',
+      message: 'Friend request accepted',
+      status: 'success',
       user
     });
   } catch (error) {
     return res.status(400).json({
+      status: 'error',
       message: 'Something went wrong.'
     });
   }
@@ -227,7 +235,7 @@ exports.unfriend = async (req, res) => {
     await localUser.save();
     await remoteUser.save();
     return res.json({
-      message: 'User followed successfully',
+      message: 'User removed successfully',
       user: localUser
     });
   } catch (error) {
@@ -255,11 +263,11 @@ exports.getUser = async (req, res) => {
   }
 };
 
-exports.getRequests = async (req, res) => {
+exports.getUsers = async (req, res) => {
   try {
     const { ids } = await req.query;
     const users = await User.find({ _id: { $in: ids } });
-    console.log('users', users);
+    res.send({ users, status: 'success' });
   } catch (error) {
     return res.status(400).json({
       message: 'Something went wrong.'
