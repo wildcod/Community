@@ -23,7 +23,6 @@ export function Friends({ navigation }) {
   }, [])
 
   const handleGetData = async () => {
-    console.log('getting friends', authState.userInfo.friends)
     if (!authState.userInfo.friends || !authState.userInfo.friends.length) return
     const response = await axios.get(`users?ids=${authState.userInfo.friends.join(',')}`)
     const data = await response.data

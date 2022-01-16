@@ -37,9 +37,13 @@ export default StyleSheet.create({
   },
   heading: {
     fontSize: 30,
-
     marginLeft: 10,
     marginTop: 20,
     fontWeight: 'bold'
+  },
+  avatar: {
+    height: 30,
+    width: 30,
+    borderRadius: 30 / 2
   }
 })

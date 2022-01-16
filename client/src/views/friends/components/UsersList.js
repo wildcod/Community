@@ -4,6 +4,7 @@ import React, { useContext, useEffect, useLayoutEffect, useState } from 'react'
 import {
   ActivityIndicator,
   FlatList,
+  Image,
   RefreshControl,
   Text,
   TouchableWithoutFeedback,
@@ -63,7 +64,15 @@ const Tile = ({ item, navigation }) => {
   ) : (
     <>
       <View style={styles.friendTile}>
-        <Text style={[styles.friendName, { color: colors.text }]}>{item.username}</Text>
+        <View style={{ flexDirection: 'row' }}>
+          <Image
+            style={styles.avatar}
+            source={{ uri: 'https://100k-faces.glitch.me/random-image' }}
+          />
+          <Text style={[styles.friendName, { marginLeft: 15, fontSize: 18, color: colors.text }]}>
+            {item.username}
+          </Text>
+        </View>
 
         {isFriends ? (
           <TouchableWithoutFeedback
