@@ -5,8 +5,10 @@ import {
   Text,
   TextInput,
   TouchableWithoutFeedback,
+  TouchableOpacity,
   KeyboardAvoidingView,
-  ActivityIndicator
+  ActivityIndicator,
+  Image
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from '@react-navigation/native'
@@ -18,51 +20,80 @@ import * as Yup from 'yup'
 import Button from '../components/Button'
 import { AuthContext } from '../context/authContext'
 
+import ImagePicker from 'react-native-image-crop-picker'
+import { Plus } from '../components/icons'
+import uploadImage from '../utils/uploadImage'
+
 const SignUp = ({ navigation }) => {
   const { setStorage } = React.useContext(AuthContext)
   const { colors } = useTheme()
   const [isLoading, setIsLoading] = React.useState(false)
+  const [avatar, setAvatar] = React.useState(undefined)
+
+  const handleImage = () => {
+    try {
+      ImagePicker.openPicker({
+        width: 550,
+        height: 550,
+        cropping: true,
+        multiple: false
+      }).then(image => {
+        setAvatar(image.path)
+      })
+    } catch (err) {
+      console.log('error picking images', err)
+    }
+  }
+
+  const onSubmit = async (values, { setStatus, resetForm }) => {
+    try {
+      const uploadImageResponse = await uploadImage(avatar)
+      console.log('uploadImage', uploadImageResponse)
+      if (uploadImageResponse.err) return err
+      const { data } = await axios.post('signup', { ...values, avatar: uploadImageResponse.url })
+      const { token, expiresAt, userInfo } = data
+
+      setStorage(token, expiresAt, userInfo)
+      navigation.navigate('Home')
+      resetForm({})
+    } catch (error) {
+      setStatus(error.response.data.message)
+    }
+  }
 
   return (
-    <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
-      <Formik
-        initialValues={{ username: '', password: '', passwordConfirmation: '' }}
-        onSubmit={async (values, { setStatus, resetForm }) => {
-          try {
-            const { data } = await axios.post('signup', values)
-            const { token, expiresAt, userInfo } = data
-            setStorage(token, expiresAt, userInfo)
-            navigation.navigate('Home')
-            resetForm({})
-          } catch (error) {
-            setStatus(error.response.data.message)
-          }
-        }}
-        validationSchema={Yup.object({
-          username: Yup.string()
-            .required('Required')
-            .max(32, 'Must be at most 32 characters long')
-            .matches(/^[a-zA-Z0-9_-]+$/, 'Contains invalid characters'),
-          password: Yup.string()
-            .required('Required')
-            .min(6, 'Must be at least 6 characters long')
-            .max(50, 'Must be at most 50 characters long'),
-          passwordConfirmation: Yup.string().oneOf(
-            [Yup.ref('password'), null],
-            'Passwords must match'
-          )
-        })}
-      >
-        {({
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          touched,
-          errors,
-          status,
-          values,
-          setTouched
-        }) => (
+    <Formik
+      initialValues={{ username: '', password: '', passwordConfirmation: '' }}
+      onSubmit={onSubmit}
+      validationSchema={Yup.object({
+        username: Yup.string()
+          .required('Required')
+          .max(32, 'Must be at most 32 characters long')
+          .matches(/^[a-zA-Z0-9_-]+$/, 'Contains invalid characters'),
+        password: Yup.string()
+          .required('Required')
+          .min(6, 'Must be at least 6 characters long')
+          .max(50, 'Must be at most 50 characters long'),
+        passwordConfirmation: Yup.string().oneOf(
+          [Yup.ref('password'), null],
+          'Passwords must match'
+        )
+      })}
+    >
+      {({
+        handleChange,
+        handleBlur,
+        handleSubmit,
+        touched,
+        errors,
+        status,
+        values,
+        setTouched
+      }) => (
+        <KeyboardAvoidingView
+          behavior="padding"
+          style={{ flex: 1, backgroundColor: colors.background }}
+        >
           <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
             <View as={SafeAreaView} style={styles.container}>
               <View
@@ -70,6 +101,37 @@ const SignUp = ({ navigation }) => {
                 onStartShouldSetResponder={() => true}
                 onResponderRelease={() => setTouched(errors)}
               >
+                <TouchableOpacity
+                  onPress={() => navigation.goBack()}
+                  style={{ position: 'absolute', right: 15, top: 15, zIndex: 1000 }}
+                >
+                  <Text style={{ color: colors.primary }}>Close</Text>
+                </TouchableOpacity>
+
+                <TouchableWithoutFeedback onPress={handleImage}>
+                  <View
+                    style={{
+                      width: 75,
+                      height: 75,
+                      borderRadius: 75 / 2,
+                      marginTop: -30,
+                      backgroundColor: colors.bgColor,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      alignSelf: 'center'
+                    }}
+                  >
+                    {avatar ? (
+                      <Image
+                        style={{ width: 75, height: 75, borderRadius: 75 / 2 }}
+                        source={{ uri: avatar }}
+                      />
+                    ) : (
+                      <Plus color="#fff" />
+                    )}
+                  </View>
+                </TouchableWithoutFeedback>
+
                 {!!status && <Text style={styles.status}>{status}</Text>}
                 {touched.username && errors.username && (
                   <Text style={styles.errorMessage}>{errors.username}</Text>
@@ -133,9 +195,9 @@ const SignUp = ({ navigation }) => {
               </View>
             </View>
           </TouchableWithoutFeedback>
-        )}
-      </Formik>
-    </KeyboardAvoidingView>
+        </KeyboardAvoidingView>
+      )}
+    </Formik>
   )
 }
 
@@ -147,7 +209,7 @@ const styles = StyleSheet.create({
   modal: {
     padding: 16,
     width: '100%',
-    height: 400,
+    height: '100%',
     borderRadius: 6,
     elevation: 6,
     justifyContent: 'center'
