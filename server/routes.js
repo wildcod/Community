@@ -8,7 +8,7 @@ const commentAuth = require('./middlewares/commentAuth');
 
 const router = require('express').Router();
 
-router.get('/user/:id', users.getUser);
+router.get('/user/id/:id', users.getUser);
 
 //Search
 router.get('/user/search/:q', users.search);

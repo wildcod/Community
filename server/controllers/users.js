@@ -266,7 +266,9 @@ exports.getUser = async (req, res) => {
 exports.getUsers = async (req, res) => {
   try {
     const { ids } = await req.query;
-    const users = await User.find({ _id: { $in: ids } });
+    console.log('getting users', ids, typeof ids);
+    const idsArray = ids.split(',');
+    const users = await User.find({ _id: { $in: idsArray } });
     res.send({ users, status: 'success' });
   } catch (error) {
     return res.status(400).json({

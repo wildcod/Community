@@ -1,4 +1,5 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Dimensions } from 'react-native'
+const { height } = Dimensions.get('screen')
 
 export default StyleSheet.create({
   screen: {
@@ -6,10 +7,8 @@ export default StyleSheet.create({
   },
   button: {
     width: '95%',
-    height: '7.5%',
+    height: height * 0.075,
     alignSelf: 'center',
-    borderWidth: 0.25,
-    borderColor: 'grey',
     alignItems: 'center',
     justifyContent: 'center'
   },

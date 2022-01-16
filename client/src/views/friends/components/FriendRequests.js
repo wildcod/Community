@@ -1,12 +1,19 @@
 import { useTheme } from '@react-navigation/native'
 import React, { useContext, useEffect, useState } from 'react'
-import { View, Text, StatusBar, FlatList, TouchableWithoutFeedback } from 'react-native'
+import {
+  View,
+  Text,
+  StatusBar,
+  FlatList,
+  TouchableWithoutFeedback,
+  ActivityIndicator
+} from 'react-native'
 import { AuthContext } from '../../../context/authContext'
 import styles from './styles'
 import axios from '../../../utils/fetcher'
 import AsyncStorage from '@react-native-community/async-storage'
 
-export default function() {
+export default function({ navigation }) {
   const { colors } = useTheme()
   const { authState } = useContext(AuthContext)
   const [requests, setRequests] = useState([])
@@ -22,7 +29,9 @@ export default function() {
     if (data.status === 'success') setRequests(data.users)
   }
 
-  const renderItem = ({ item }) => <Tile item={item} setRequests={setRequests} />
+  const renderItem = ({ item }) => (
+    <Tile item={item} navigation={navigation} setRequests={setRequests} />
+  )
 
   return (
     <View style={styles.screen}>
@@ -36,10 +45,11 @@ export default function() {
   )
 }
 
-const Tile = ({ item, setRequests }) => {
+const Tile = ({ item, navigation }) => {
   const { colors } = useTheme()
   const { authState, setAuthState } = useContext(AuthContext)
   const [loading, setLoading] = useState(false)
+  const [accepted, setAccepted] = useState(false)
 
   const handleAccept = async () => {
     setLoading(true)
@@ -49,7 +59,8 @@ const Tile = ({ item, setRequests }) => {
     const data = await response.data
     setLoading(false)
     if (data.status === 'success') {
-      setRequests(prev => prev.filter(({ id }) => id !== item.id))
+      setAccepted(true)
+      // setRequests(prev => prev.filter(({ id }) => id !== item.id))
       setAuthState({ ...authState, userInfo: data.user })
       await AsyncStorage.setItem('userInfo', JSON.stringify(data.user))
     }
@@ -59,30 +70,41 @@ const Tile = ({ item, setRequests }) => {
     <>
       <View style={styles.friendTile}>
         <Text style={[styles.friendName, { color: colors.text }]}>{item.username}</Text>
-
-        <View style={{ flexDirection: 'row' }}>
-          <TouchableWithoutFeedback disabled={loading} onPress={handleAccept}>
-            <View
-              style={[
-                styles.friendRequestTileButton,
-                { marginRight: 5, backgroundColor: colors.primary }
-              ]}
-            >
-              <Text style={{ color: '#fff', fontSize: 16 }}>Accept</Text>
+        {accepted ? (
+          <TouchableWithoutFeedback
+            onPress={() => navigation.navigate('Chat', { remoteUser: item })}
+          >
+            <View style={[styles.friendRequestTileButton, { backgroundColor: colors.primary }]}>
+              <Text style={[styles.friendName, { color: '#fff' }]}>Message</Text>
             </View>
           </TouchableWithoutFeedback>
+        ) : loading ? (
+          <ActivityIndicator color={colors.primary} />
+        ) : (
+          <View style={{ flexDirection: 'row' }}>
+            <TouchableWithoutFeedback disabled={loading} onPress={handleAccept}>
+              <View
+                style={[
+                  styles.friendRequestTileButton,
+                  { marginRight: 5, backgroundColor: colors.primary }
+                ]}
+              >
+                <Text style={{ color: '#fff', fontSize: 16 }}>Accept</Text>
+              </View>
+            </TouchableWithoutFeedback>
 
-          <TouchableWithoutFeedback disabled={loading}>
-            <View
-              style={[
-                styles.friendRequestTileButton,
-                { marginLeft: 5, borderColor: colors.primary, borderWidth: 1 }
-              ]}
-            >
-              <Text style={{ color: colors.primary, fontSize: 16 }}>Decline</Text>
-            </View>
-          </TouchableWithoutFeedback>
-        </View>
+            <TouchableWithoutFeedback disabled={loading}>
+              <View
+                style={[
+                  styles.friendRequestTileButton,
+                  { marginLeft: 5, borderColor: colors.primary, borderWidth: 1 }
+                ]}
+              >
+                <Text style={{ color: colors.primary, fontSize: 16 }}>Decline</Text>
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+        )}
       </View>
       <View style={styles.seperator} />
     </>

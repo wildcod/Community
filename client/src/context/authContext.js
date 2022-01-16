@@ -22,7 +22,7 @@ const AuthProvider = ({ children }) => {
       if (new Date().getTime() / 1000 > JSON.parse(expiresAt)) {
         signOut()
       }
-      const response = await instanceAxios.get(`user/${JSON.parse(userInfo).id}`)
+      const response = await instanceAxios.get(`user/id/${JSON.parse(userInfo).id}`)
       const userData = await response.data
 
       setAuthState({
