@@ -37,7 +37,7 @@ const SignUp = ({ navigation }) => {
         height: 550,
         cropping: true,
         multiple: false
-      }).then(image => {
+      }).then(async image => {
         setAvatar(image.path)
       })
     } catch (err) {

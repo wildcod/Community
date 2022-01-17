@@ -67,7 +67,13 @@ const Tile = ({ item, navigation }) => {
         <View style={{ flexDirection: 'row' }}>
           <Image
             style={styles.avatar}
-            source={{ uri: 'https://100k-faces.glitch.me/random-image' }}
+            source={{
+              uri: item.avatar
+                ? item.avatar.slice(0, 16) === 'https://https://'
+                  ? item.avatar.slice(8)
+                  : item.avatar
+                : 'https://100k-faces.glitch.me/random-image'
+            }}
           />
           <Text style={[styles.friendName, { marginLeft: 15, fontSize: 18, color: colors.text }]}>
             {item.username}

@@ -1,11 +1,8 @@
-const {
-  DO_SPACES_ENDPOINT,
-  DO_SPACES_REGION,
-  DO_SPACES_BUCKET,
-  DO_SPACES_PREFIX,
-  DO_SPACES_KEY,
-  DO_SPACES_SECRET
-} = process.env
+const AWS_REGION = 'us-east-1'
+const AWS_BUCKET = 'community-app-images'
+const AWS_ACCESS_KEY = 'AKIASXXDMP7SJS4EC65I'
+const AWS_SECRET = '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'
+
 import { RNS3 } from 'react-native-aws3'
 
 export default async uri => {
@@ -25,11 +22,10 @@ export default async uri => {
         type: `image/${extension}`
       },
       {
-        awsUrl: DO_SPACES_ENDPOINT,
-        bucket: DO_SPACES_BUCKET,
-        region: DO_SPACES_REGION,
-        accessKey: DO_SPACES_KEY,
-        secretKey: DO_SPACES_SECRET,
+        bucket: AWS_BUCKET,
+        region: AWS_REGION,
+        accessKey: AWS_ACCESS_KEY,
+        secretKey: AWS_SECRET,
         successActionStatus: 201
       }
     )

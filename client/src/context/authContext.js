@@ -22,14 +22,22 @@ const AuthProvider = ({ children }) => {
       if (new Date().getTime() / 1000 > JSON.parse(expiresAt)) {
         signOut()
       }
-      const response = await instanceAxios.get(`user/id/${JSON.parse(userInfo).id}`)
-      const userData = await response.data
+      if (userInfo) {
+        const response = await instanceAxios.get(`user/id/${JSON.parse(userInfo).id}`)
+        const userData = await response.data
 
-      setAuthState({
-        token,
-        expiresAt,
-        userInfo: userInfo ? userData.user : {}
-      })
+        setAuthState({
+          token,
+          expiresAt,
+          userInfo: userInfo ? userData.user : {}
+        })
+      } else {
+        setAuthState({
+          token,
+          expiresAt,
+          userInfo: {}
+        })
+      }
     }
 
     bootstrapAsync()

@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const userModel = new Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  avatar: { type: String, required: true },
+  avatar: { type: String, required: false },
   friends: { type: Array, required: false },
   requests: { type: Array, required: false },
   role: { type: String, required: true, default: 'user' }

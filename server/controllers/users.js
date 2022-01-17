@@ -16,12 +16,13 @@ exports.signup = async (req, res) => {
   }
 
   try {
-    const { username } = req.body;
+    const { username, avatar } = req.body;
 
     const hashedPassword = await hashPassword(req.body.password);
 
     const userData = {
       username: username.toLowerCase(),
+      avatar,
       password: hashedPassword
     };
 
@@ -43,11 +44,12 @@ exports.signup = async (req, res) => {
       const decodedToken = jwtDecode(token);
       const expiresAt = decodedToken.exp;
 
-      const { username, role, id } = savedUser;
+      const { username, role, id, avatar } = savedUser;
       const userInfo = {
         username,
         role,
-        id
+        id,
+        avatar
       };
 
       return res.json({
