@@ -1,5 +1,6 @@
 const Room = require('../models/room');
 const User = require('../models/user');
+const Post = require('../models/post');
 
 exports.create = async (req, res) => {
   try {
@@ -25,9 +26,7 @@ exports.getRoomAvatars = async (req, res) => {
   try {
     const { ids } = await req.query;
     const idsArray = ids.split(',');
-    console.log('getting rooms ', idsArray);
     const avatars = await Room.find({ _id: { $in: idsArray } }, 'avatar');
-    console.log('avatars', avatars);
     res.send({ avatars, status: 'success' });
   } catch (error) {
     return res.status(400).json({
@@ -71,6 +70,23 @@ exports.joinRoom = async (req, res) => {
       status: 'success',
       message: 'Joined room successfully',
       data: user
+    });
+  } catch (error) {
+    return res.status(400).json({
+      status: 'error',
+      message: 'Something went wrong.'
+    });
+  }
+};
+
+exports.getRoomPosts = async (req, res) => {
+  try {
+    const { roomId } = await req.params;
+    console.log('getting for ', roomId);
+    const posts = await Post.find({ inRoom: roomId });
+    res.send({
+      status: 'success',
+      data: posts
     });
   } catch (error) {
     return res.status(400).json({

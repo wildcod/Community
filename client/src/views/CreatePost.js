@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {
   StyleSheet,
   View,
@@ -18,6 +18,7 @@ import * as Yup from 'yup'
 
 import { Plus } from '../components/icons'
 import CategoryPicker from '../components/CategoryPicker'
+import { RoomContext } from '../context/roomContext'
 
 const TypeSwichContainer = ({ children }) => {
   return <View style={styles.typeContainer}>{children}</View>
@@ -53,6 +54,7 @@ const TypeSwichButton = ({ selected, onClick, type }) => {
 
 const CreatePost = () => {
   const { colors } = useTheme()
+  const { activeRoom } = useContext(RoomContext)
   const [isLoading, setIsLoading] = React.useState(false)
   const [message, setMessage] = React.useState(null)
   const fadeAnim = React.useRef(new Animated.Value(0)).current
@@ -82,7 +84,9 @@ const CreatePost = () => {
         onSubmit={async (values, { setStatus, resetForm }) => {
           setIsLoading(true)
           try {
-            await axios.post('posts', values)
+            const payload = activeRoom ? { ...values, inRoom: activeRoom.id } : values
+            console.log('payload', payload)
+            await axios.post('posts', payload)
             resetForm({ ...values, type: 'text' })
             setMessage('Successfully Created!')
             fadeIn()

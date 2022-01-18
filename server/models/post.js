@@ -41,7 +41,8 @@ const postSchema = new Schema({
   created: { type: Date, default: Date.now },
   views: { type: Number, default: 0 },
   type: { type: String, default: 'link', required: true },
-  text: { type: String }
+  text: { type: String },
+  inRoom: { type: String }
 });
 
 postSchema.set('toJSON', { getters: true, virtuals: true });

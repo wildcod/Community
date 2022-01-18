@@ -23,9 +23,11 @@ exports.create = async (req, res, next) => {
   }
 
   try {
-    const { title, url, category, type, text } = req.body;
+    console.log('creating post', req.body);
+    const { title, url, category, type, text, inRoom } = req.body;
     const author = req.user.id;
     const post = await Post.create({
+      inRoom,
       title,
       url,
       author,

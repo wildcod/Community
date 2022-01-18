@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import { StyleSheet, View, FlatList, Text, StatusBar, Linking } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from '@react-navigation/native'
@@ -12,12 +12,14 @@ import Post from '../components/Post'
 import PostLoader from '../components/PostLoader'
 import CategoryLoader from '../components/CategoryLoader'
 import JoinRoom from '../components/JoinRoom'
+import { RoomContext } from '../context/roomContext'
+import instanceAxios from '../utils/fetcher'
 
 const Home = () => {
-  const { authState } = React.useContext(AuthContext)
-  const { theme } = React.useContext(ThemeContext)
+  const { authState } = useContext(AuthContext)
+  const { theme } = useContext(ThemeContext)
   const { colors } = useTheme()
-
+  const { activeRoom } = useContext(RoomContext)
   const [postData, setPostData] = React.useState(null)
   const [category, setCategory] = React.useState('all')
   const [isLoading, setIsLoaading] = React.useState(false)
@@ -28,12 +30,26 @@ const Home = () => {
     const { data } = await axios.get(
       !category || category === 'all' ? 'posts' : `posts/${category}`
     )
+    console.log('postdata', data)
     setPostData(data)
     setIsLoaading(false)
   }, [category])
 
+  useEffect(() => {
+    if (activeRoom) handleActiveRoomPosts()
+  }, [activeRoom])
+
+  const handleActiveRoomPosts = async () => {
+    console.log('getting room posts', activeRoom)
+    const response = await instanceAxios.get(`room/posts/${activeRoom.id}`)
+    const responseData = await response.data
+    console.log('responseData', responseData)
+    if (responseData.status === 'error') return
+    setPostData(responseData.data)
+  }
+
   React.useEffect(() => {
-    getPostData()
+    if (!activeRoom) getPostData()
   }, [getPostData])
 
   React.useEffect(() => {
@@ -49,6 +65,11 @@ const Home = () => {
     })
   }, [])
 
+  const onRefresh = () => {
+    if (activeRoom) handleActiveRoomPosts()
+    else getPostData()
+  }
+
   return (
     <View as={SafeAreaView} style={styles.container}>
       <StatusBar
@@ -61,7 +82,7 @@ const Home = () => {
           data={postData}
           extraData={isLoading}
           refreshing={isLoading}
-          onRefresh={() => getPostData()}
+          onRefresh={onRefresh}
           keyExtractor={item => item.id}
           ListHeaderComponent={
             <CategoryPicker selectedCategory={category} onClick={setCategory} addAll />
