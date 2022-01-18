@@ -1,21 +1,27 @@
 import { useTheme } from '@react-navigation/native'
-import React from 'react'
+import React, { useState } from 'react'
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { AuthContext } from '../context/authContext'
+import CreateRoom from './CreateRoom'
 import { Friends, Home, Plus, PlusSquare, User } from './icons/index'
 
 function TabBar({ state, descriptors, navigation }) {
   const { authState } = React.useContext(AuthContext)
   const { colors } = useTheme()
+  const [showCreateRoom, setShowCreateRoom] = useState(false)
 
   const createRoomButton = () => (
-    <TouchableOpacity style={[styles.avatar, { backgroundColor: colors.primary }]}>
+    <TouchableOpacity
+      onPress={() => setShowCreateRoom(true)}
+      style={[styles.avatar, { backgroundColor: colors.primary }]}
+    >
       <Plus color="#fff" />
     </TouchableOpacity>
   )
 
   return (
-    <View style={{ height: '15%' }}>
+    <View style={{ height: 75 }}>
+      <CreateRoom visible={showCreateRoom} setVisible={setShowCreateRoom} />
       <FlatList
         style={[styles.list, { backgroundColor: colors.bgColor }]}
         data={[]}
@@ -23,24 +29,6 @@ function TabBar({ state, descriptors, navigation }) {
         keyExtractor={item => item}
         ListHeaderComponent={createRoomButton}
         contentContainerStyle={{ alignSelf: 'center' }}
-        // renderItem={({ item }) => (
-        //   <TouchableOpacity
-        //     onPress={() => (onClick ? onClick(item) : setFieldValue('category', item))}
-        //   >
-        //     <Text
-        //       style={[
-        //         styles.category,
-        //         {
-        //           fontWeight: item === selectedCategory ? 'bold' : 'normal',
-        //           borderBottomColor: item === selectedCategory ? colors.blue : 'transparent',
-        //           color: item === selectedCategory ? colors.blue : colors.text
-        //         }
-        //       ]}
-        //     >
-        //       {item}
-        //     </Text>
-        //   </TouchableOpacity>
-        // )}
       />
       <View
         style={[

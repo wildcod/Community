@@ -2,6 +2,7 @@ const users = require('./controllers/users');
 const posts = require('./controllers/posts');
 const votes = require('./controllers/votes');
 const comments = require('./controllers/comments');
+const rooms = require('./controllers/rooms');
 const requireAuth = require('./middlewares/requireAuth');
 const postAuth = require('./middlewares/postAuth');
 const commentAuth = require('./middlewares/commentAuth');
@@ -46,6 +47,9 @@ router.delete(
   [requireAuth, commentAuth],
   comments.delete
 );
+
+// Rooms
+router.post('/room/', rooms.create);
 
 module.exports = (app) => {
   app.use('/api', router);
