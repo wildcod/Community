@@ -106,7 +106,7 @@ const User = ({ route }) => {
             <Post
               index={index}
               postId={item.id}
-              userId={authState.userInfo.id}
+              userId={authState && authState.userInfo && authState.userInfo.id}
               score={item.score}
               type={item.type}
               title={item.title}

@@ -75,7 +75,7 @@ const PostDetail = ({ route, navigation }) => {
             ListHeaderComponent={
               <Post
                 postId={post.id}
-                userId={authState.userInfo.id}
+                userId={authState && authState.userInfo && authState.userInfo.id}
                 score={post.score}
                 type={post.type}
                 title={post.title}

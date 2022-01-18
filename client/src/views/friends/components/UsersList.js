@@ -20,6 +20,7 @@ export default function({ navigation, users, setUsers }) {
 
   const onRefresh = async () => {
     setRefreshing(true)
+    if (!authState || !authState.userInfo) return
     const response = await axios.get(`user/id/${authState.userInfo.id}`)
     const data = await response.data
     setAuthState({ ...authState, userInfo: data.user })

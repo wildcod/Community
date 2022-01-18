@@ -95,8 +95,13 @@ function MyTabs() {
 
 function RootScreen() {
   const { theme } = React.useContext(ThemeContext)
+
+  const linking = {
+    prefixes: ['https://app.community.client.com']
+  }
+
   return (
-    <NavigationContainer theme={theme === 'light' ? DefaultTheme : DarkTheme}>
+    <NavigationContainer linking={linking} theme={theme === 'light' ? DefaultTheme : DarkTheme}>
       <RootStack.Navigator
         screenOptions={{
           headerShown: false,

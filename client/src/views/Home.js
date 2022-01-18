@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, FlatList, Text, StatusBar } from 'react-native'
+import { StyleSheet, View, FlatList, Text, StatusBar, Linking } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from '@react-navigation/native'
 
@@ -34,6 +34,10 @@ const Home = () => {
     getPostData()
   }, [getPostData])
 
+  React.useEffect(() => {
+    Linking.getInitialURL().then(url => console.log('initial url', url))
+  }, [])
+
   return (
     <View as={SafeAreaView} style={styles.container}>
       <StatusBar
@@ -58,7 +62,7 @@ const Home = () => {
             <Post
               index={index}
               postId={item.id}
-              userId={authState.userInfo.id}
+              userId={authState && authState.userInfo && authState.userInfo.id}
               score={item.score}
               type={item.type}
               title={item.title}
