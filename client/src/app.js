@@ -5,6 +5,7 @@ if (__DEV__) {
 }
 
 import { AuthProvider } from './context/authContext'
+import { RoomProvider } from './context/roomContext'
 import { ThemeProvider } from './context/themeSwichContext'
 import Navigation from './navigation'
 
@@ -13,7 +14,9 @@ const App = () => {
     <SafeAreaProvider>
       <AuthProvider>
         <ThemeProvider>
-          <Navigation />
+          <RoomProvider>
+            <Navigation />
+          </RoomProvider>
         </ThemeProvider>
       </AuthProvider>
     </SafeAreaProvider>

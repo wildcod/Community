@@ -9,15 +9,19 @@ import {
   View
 } from 'react-native'
 import { AuthContext } from '../context/authContext'
+import { RoomContext } from '../context/roomContext'
 import instanceAxios from '../utils/fetcher'
 import CreateRoom from './CreateRoom'
 import { Friends, Home, Plus, PlusSquare, User } from './icons/index'
+import LoadingModal from './LoadingModal'
 
 function TabBar({ state, descriptors, navigation }) {
   const { authState } = React.useContext(AuthContext)
+  const { activeRoom, setActiveRoom } = React.useContext(RoomContext)
   const { colors } = useTheme()
   const [showCreateRoom, setShowCreateRoom] = useState(false)
   const [rooms, setRooms] = useState([])
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     getRoomsData()
@@ -42,16 +46,35 @@ function TabBar({ state, descriptors, navigation }) {
     </TouchableOpacity>
   )
 
+  const handleOnPressRoom = async data => {
+    setLoading(true)
+    const response = await instanceAxios.get(`room/${data.id}`)
+    const responseData = await response.data
+    if (responseData.status === 'error') return
+    setActiveRoom(responseData.data)
+    setLoading(false)
+  }
+
   const renderItem = ({ item }) => (
-    <TouchableWithoutFeedback>
+    <TouchableWithoutFeedback onPress={() => handleOnPressRoom(item)}>
       <View>
-        <Image style={styles.avatar} source={{ uri: item.avatar }} />
+        <Image
+          style={[
+            styles.avatar,
+            {
+              borderWidth: activeRoom && activeRoom.id === item.id ? 2 : 0,
+              borderColor: activeRoom && activeRoom.id === item.id ? colors.primary : 'transparent'
+            }
+          ]}
+          source={{ uri: item.avatar }}
+        />
       </View>
     </TouchableWithoutFeedback>
   )
 
   return (
     <View style={{ height: 75 }}>
+      {loading && <LoadingModal visible={loading} />}
       <CreateRoom visible={showCreateRoom} setVisible={setShowCreateRoom} />
       <FlatList
         style={[styles.list, { backgroundColor: colors.bgColor }]}
