@@ -1,5 +1,5 @@
 import { useTheme } from '@react-navigation/native'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
   ActivityIndicator,
   Image,
@@ -20,12 +20,16 @@ import Button from './Button'
 import { Plus } from './icons/index'
 
 import Clipboard from '@react-native-clipboard/clipboard'
+import { AuthContext } from '../context/authContext'
+import AsyncStorage from '@react-native-community/async-storage'
+import uploadImage from '../utils/uploadImage'
 
 const _topics = []
 for (var i = 0; i < 7; i++) _topics.push('')
 
 export default function CreateRoom({ visible, setVisible }) {
   const { colors } = useTheme()
+  const { authState, setAuthState } = useContext(AuthContext)
   const [name, setName] = useState('')
   const [avatar, setAvatar] = useState('')
   const [topics, setTopics] = useState(_topics)
@@ -64,15 +68,26 @@ export default function CreateRoom({ visible, setVisible }) {
   const handleCreateRoom = async () => {
     const _errors = handleValidate()
     if (_errors.length) return setErrors(_errors)
-    const payload = { name, avatar, topics }
+    const uploadImageResponse = await uploadImage(avatar)
+    console.log('uploadImage', uploadImageResponse)
+    if (uploadImageResponse.err) return err
+    const payload = {
+      room: { name, avatar: uploadImageResponse.url, topics },
+      userId: authState.userInfo.id
+    }
     setLoading(true)
-    const resposne = await instanceAxios.post(`room/`, payload)
-    const responseData = await resposne.data
+    const response = await instanceAxios.post(`room/`, payload)
+    const responseData = await response.data
     setLoading(false)
     if (responseData.status === 'error') return
     const { data } = responseData
-    setLink(`community://room/invite/${data._id}`)
+    console.log('data', data)
+    setLink(`community://room/invite/${data.id}`)
     setCreated(true)
+    const _user = authState.userInfo
+    _user.rooms ? _user.rooms.push(data.id) : (_user.rooms = [data.id])
+    setAuthState({ ...authState, userInfo: _user })
+    await AsyncStorage.setItem('userInfo', JSON.stringify(_user))
   }
 
   const handleValidate = () => {

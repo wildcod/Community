@@ -50,6 +50,7 @@ router.delete(
 
 // Rooms
 router.post('/room/', rooms.create);
+router.get('/rooms/avatar', rooms.getRoomAvatars);
 
 module.exports = (app) => {
   app.use('/api', router);

@@ -48,7 +48,6 @@ const SignUp = ({ navigation }) => {
   const onSubmit = async (values, { setStatus, resetForm }) => {
     try {
       const uploadImageResponse = await uploadImage(avatar)
-      console.log('uploadImage', uploadImageResponse)
       if (uploadImageResponse.err) return err
       const { data } = await axios.post('signup', { ...values, avatar: uploadImageResponse.url })
       const { token, expiresAt, userInfo } = data
