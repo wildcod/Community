@@ -11,6 +11,7 @@ import CategoryPicker from '../components/CategoryPicker'
 import Post from '../components/Post'
 import PostLoader from '../components/PostLoader'
 import CategoryLoader from '../components/CategoryLoader'
+import JoinRoom from '../components/JoinRoom'
 
 const Home = () => {
   const { authState } = React.useContext(AuthContext)
@@ -20,6 +21,7 @@ const Home = () => {
   const [postData, setPostData] = React.useState(null)
   const [category, setCategory] = React.useState('all')
   const [isLoading, setIsLoaading] = React.useState(false)
+  const [showJoinRoom, setShowJoinRoom] = React.useState(false)
 
   const getPostData = React.useCallback(async () => {
     setIsLoaading(true)
@@ -35,7 +37,16 @@ const Home = () => {
   }, [getPostData])
 
   React.useEffect(() => {
-    Linking.getInitialURL().then(url => console.log('initial url', url))
+    Linking.getInitialURL().then(url => {
+      if (url) {
+        const type = url.split('/').length > 2 && url.split('/').slice(-2)[0]
+        const id = url.split('/').slice(-1)[0]
+        if (type === 'invite') {
+          if (authState && authState.userInfo && authState.userInfo.rooms.indexOf(id) !== -1) return
+          setShowJoinRoom(true)
+        }
+      }
+    })
   }, [])
 
   return (
@@ -44,6 +55,7 @@ const Home = () => {
         barStyle={theme === 'light' ? 'dark-content' : 'light-content'}
         backgroundColor={colors.background}
       />
+      {showJoinRoom && <JoinRoom visible={showJoinRoom} setVisible={setShowJoinRoom} />}
       {postData ? (
         <FlatList
           data={postData}

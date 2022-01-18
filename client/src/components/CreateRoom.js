@@ -69,10 +69,9 @@ export default function CreateRoom({ visible, setVisible }) {
     const _errors = handleValidate()
     if (_errors.length) return setErrors(_errors)
     const uploadImageResponse = await uploadImage(avatar)
-    console.log('uploadImage', uploadImageResponse)
     if (uploadImageResponse.err) return err
     const payload = {
-      room: { name, avatar: uploadImageResponse.url, topics },
+      room: { name, avatar: uploadImageResponse.url, topics, members: [authState.userInfo.id] },
       userId: authState.userInfo.id
     }
     setLoading(true)
@@ -81,8 +80,7 @@ export default function CreateRoom({ visible, setVisible }) {
     setLoading(false)
     if (responseData.status === 'error') return
     const { data } = responseData
-    console.log('data', data)
-    setLink(`community://room/invite/${data.id}`)
+    setLink(`app.community://room/invite/${data.id}`)
     setCreated(true)
     const _user = authState.userInfo
     _user.rooms ? _user.rooms.push(data.id) : (_user.rooms = [data.id])
@@ -258,8 +256,6 @@ const styles = StyleSheet.create({
   error: {
     color: 'crimson',
     marginTop: 2,
-    // textAlign: 'center',
-
     fontSize: 12
   },
   tick: {

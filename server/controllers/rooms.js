@@ -36,3 +36,46 @@ exports.getRoomAvatars = async (req, res) => {
     });
   }
 };
+
+exports.getRoom = async (req, res) => {
+  try {
+    const { id } = await req.params;
+
+    const room = await Room.findById(id);
+    if (!room)
+      return res.status(403).json({
+        message: 'Room not found'
+      });
+    return res.send({
+      data: room,
+      status: 'success'
+    });
+  } catch (error) {
+    return res.status(400).json({
+      status: 'error',
+      message: 'Something went wrong.'
+    });
+  }
+};
+
+exports.joinRoom = async (req, res) => {
+  try {
+    const { userId, roomId } = await req.query;
+    const user = await User.findById(userId);
+    const room = await Room.findById(roomId);
+    user.rooms ? user.rooms.push(roomId) : (user.rooms = [roomId]);
+    room.members ? room.members.push(userId) : (room.members = [roomId]);
+    await user.save();
+    await room.save();
+    return res.send({
+      status: 'success',
+      message: 'Joined room successfully',
+      data: user
+    });
+  } catch (error) {
+    return res.status(400).json({
+      status: 'error',
+      message: 'Something went wrong.'
+    });
+  }
+};

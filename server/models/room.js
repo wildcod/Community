@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 const roomModel = new Schema({
   name: { type: String, required: true },
   avatar: { type: String, required: true },
-  topics: { type: Array, required: true }
+  topics: { type: Array, required: true },
+  members: { type: Array, required: true }
 });
 
 roomModel.set('toJSON', { getters: true });

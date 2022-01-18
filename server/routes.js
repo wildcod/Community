@@ -49,8 +49,10 @@ router.delete(
 );
 
 // Rooms
-router.post('/room/', rooms.create);
+router.post('/room', rooms.create);
+router.get('/room/:id', rooms.getRoom);
 router.get('/rooms/avatar', rooms.getRoomAvatars);
+router.post('/room/join', rooms.joinRoom);
 
 module.exports = (app) => {
   app.use('/api', router);
