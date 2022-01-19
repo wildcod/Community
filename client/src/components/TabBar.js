@@ -6,7 +6,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View
+  View,
+  Text
 } from 'react-native'
 import { AuthContext } from '../context/authContext'
 import { RoomContext } from '../context/roomContext'
@@ -73,8 +74,30 @@ function TabBar({ state, descriptors, navigation }) {
   )
 
   return (
-    <View style={{ height: 75 }}>
+    <View>
       {loading && <LoadingModal visible={loading} />}
+      {activeRoom && (
+        <View
+          style={{
+            width: '100%',
+            flexDirection: 'row',
+            alignItems: 'center',
+            paddingVertical: 10,
+            backgroundColor: colors.bgColor,
+            borderBottomWidth: 1,
+            borderBottomColor: colors.background
+          }}
+        >
+          <Image style={[styles.avatar]} source={{ uri: activeRoom.avatar }} />
+          <Text style={{ color: colors.text }}>{activeRoom.name}</Text>
+          <TouchableOpacity
+            onPress={() => setActiveRoom(null)}
+            style={{ position: 'absolute', right: 10 }}
+          >
+            <Text style={{ color: colors.primary }}>Close</Text>
+          </TouchableOpacity>
+        </View>
+      )}
       <CreateRoom visible={showCreateRoom} setVisible={setShowCreateRoom} />
       <FlatList
         style={[styles.list, { backgroundColor: colors.bgColor }]}
@@ -141,7 +164,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     elevation: 2,
-    borderTopWidth: 1
+    borderTopWidth: 0.5
   },
   button: {
     flex: 1,

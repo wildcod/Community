@@ -37,6 +37,7 @@ const Home = () => {
 
   useEffect(() => {
     if (activeRoom) handleActiveRoomPosts()
+    else getPostData()
   }, [activeRoom])
 
   const handleActiveRoomPosts = async () => {

@@ -2,7 +2,7 @@ import axios from 'axios'
 import AsyncStorage from '@react-native-community/async-storage'
 
 const instanceAxios = axios.create({
-  baseURL: 'http://192.168.206.103:5000/api/'
+  baseURL: 'http://192.168.42.122:5000/api/'
 })
 
 instanceAxios.interceptors.request.use(
@@ -30,5 +30,3 @@ instanceAxios.interceptors.response.use(
 )
 
 export default instanceAxios
-
-//flyingowls12@gmail.com

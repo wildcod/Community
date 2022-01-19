@@ -58,7 +58,7 @@ exports.show = async (req, res, next) => {
 exports.list = async (req, res, next) => {
   try {
     const { sortType = '-score' } = req.body;
-    const posts = await Post.find().sort(sortType);
+    const posts = await Post.find({ inRoom: null }).sort(sortType);
     res.json(posts);
   } catch (error) {
     next(error);
