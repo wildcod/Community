@@ -1,8 +1,8 @@
-const app = require("./app");
-const mongoose = require("mongoose");
-const config = require("./config");
+const app = require('./app');
+const mongoose = require('mongoose');
+const config = require('./config');
 
-const connect = url => {
+const connect = (url) => {
   return mongoose.connect(url, config.db.options);
 };
 
