@@ -26,7 +26,7 @@ function TabBar({ state, descriptors, navigation }) {
 
   useEffect(() => {
     getRoomsData()
-  }, [authState.userInfo])
+  }, [authState])
 
   const getRoomsData = async () => {
     if (!authState.userInfo || !authState.userInfo.rooms || !authState.userInfo.rooms.length) return

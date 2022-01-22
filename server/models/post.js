@@ -42,7 +42,8 @@ const postSchema = new Schema({
   views: { type: Number, default: 0 },
   type: { type: String, default: 'link', required: true },
   text: { type: String },
-  inRoom: { type: String }
+  inRoom: { type: String },
+  swap: { type: Boolean }
 });
 
 postSchema.set('toJSON', { getters: true, virtuals: true });

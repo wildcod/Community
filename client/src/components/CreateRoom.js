@@ -37,16 +37,16 @@ export default function CreateRoom({ visible, setVisible }) {
   const [activeTopicIndex, setActiveTopicIndex] = useState(null)
   const [errors, setErrors] = useState([])
   const [loading, setLoading] = useState(false)
-  const [created, setCreated] = useState(true)
-  const [link, setLink] = useState('community://room/invite/1')
+  const [created, setCreated] = useState(false)
+  const [link, setLink] = useState(null)
 
   useEffect(() => {
     return () => {
-      setCreated(false)
-      setName('')
-      setAvatar('')
-      setTopics(_topics)
-      setLink(null)
+      // setCreated(false)
+      // setName('')
+      // setAvatar('')
+      // setTopics(_topics)
+      // setLink(null)
     }
   }, [])
 
@@ -105,7 +105,6 @@ export default function CreateRoom({ visible, setVisible }) {
         value={activeTopicIndex === index ? activeTopic : item}
         onFocus={() => setActiveTopicIndex(index)}
         onChangeText={e => {
-          console.log('onChangeText', index, e)
           setActiveTopic(e)
         }}
         onBlur={() => {
@@ -219,7 +218,7 @@ const RoomCreated = ({ link }) => {
       <Text style={[styles.heading, { color: colors.text }]}>Room created successfully!</Text>
       <Text style={{ color: colors.text }}>Share this link to invite people</Text>
       <TouchableOpacity onPress={handleCopy}>
-        <Text style={{ color: colors.primary, marginTop: 20 }}>{link}</Text>
+        <Text style={{ color: colors.primary, marginTop: 20, textAlign: 'center' }}>{link}</Text>
       </TouchableOpacity>
       <Text style={{ color: colors.border, fontSize: 10, marginTop: 10 }}>
         {tapped ? 'Copied!' : 'Tap the link to copy'}

@@ -24,7 +24,7 @@ exports.create = async (req, res, next) => {
 
   try {
     console.log('creating post', req.body);
-    const { title, url, category, type, text, inRoom } = req.body;
+    const { title, url, category, type, text, inRoom, swap } = req.body;
     const author = req.user.id;
     const post = await Post.create({
       inRoom,
@@ -33,7 +33,8 @@ exports.create = async (req, res, next) => {
       author,
       category,
       type,
-      text
+      text,
+      swap
     });
     res.status(201).json(post);
   } catch (error) {

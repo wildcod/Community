@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import {
   StyleSheet,
   View,
@@ -7,7 +7,8 @@ import {
   TextInput,
   ScrollView,
   ActivityIndicator,
-  Animated
+  Animated,
+  Switch
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from '@react-navigation/native'
@@ -58,6 +59,8 @@ const CreatePost = () => {
   const [isLoading, setIsLoading] = React.useState(false)
   const [message, setMessage] = React.useState(null)
   const fadeAnim = React.useRef(new Animated.Value(0)).current
+  const [swapEnabled, setSwapEnabled] = useState(false)
+  const toggleSwitch = () => setSwapEnabled(previousState => !previousState)
 
   const fadeIn = () => {
     Animated.timing(fadeAnim, {
@@ -84,7 +87,9 @@ const CreatePost = () => {
         onSubmit={async (values, { setStatus, resetForm }) => {
           setIsLoading(true)
           try {
-            const payload = activeRoom ? { ...values, inRoom: activeRoom.id } : values
+            const payload = activeRoom
+              ? { ...values, inRoom: activeRoom.id, swap: swapEnabled }
+              : { ...values, swap: swapEnabled }
             console.log('payload', payload)
             await axios.post('posts', payload)
             resetForm({ ...values, type: 'text' })
@@ -212,6 +217,10 @@ const CreatePost = () => {
                 />
               </>
             )}
+            <View style={[styles.flexRow, { justifyContent: 'space-between' }]}>
+              <Text style={[styles.formLabel, { color: colors.text }]}>Swap</Text>
+              <Switch onValueChange={toggleSwitch} value={swapEnabled} />
+            </View>
             <View style={styles.buttonContainer}>
               <TouchableOpacity
                 style={[styles.submitButton, { backgroundColor: colors.blue }]}

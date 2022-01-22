@@ -1,18 +1,28 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { StyleSheet, TouchableOpacity, Text, FlatList, View } from 'react-native'
 import { useTheme } from '@react-navigation/native'
 
 import categories from '../constants/categories'
+import { RoomContext } from '../context/roomContext'
 
 const CategoryPicker = ({ selectedCategory, onClick, addAll, setFieldValue, ...props }) => {
   const { colors } = useTheme()
+  const { activeRoom } = useContext(RoomContext)
 
   return (
     <View {...props}>
       <FlatList
-        data={addAll ? ['all', ...categories] : categories}
+        data={
+          activeRoom
+            ? addAll
+              ? ['all', ...activeRoom.topics]
+              : activeRoom.topics
+            : addAll
+            ? ['all', ...categories]
+            : categories
+        }
         horizontal
-        keyExtractor={item => item}
+        keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress={() => (onClick ? onClick(item) : setFieldValue('category', item))}
