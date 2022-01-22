@@ -95,6 +95,7 @@ const Home = () => {
           renderItem={({ item, index }) => (
             <Post
               index={index}
+              swap={item.swap}
               postId={item.id}
               userId={authState && authState.userInfo && authState.userInfo.id}
               score={item.score}

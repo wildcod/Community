@@ -11,6 +11,7 @@ import { ArrowDown, ArrowUp, MessageSquare, Trash } from './icons/index'
 
 const Post = ({
   index,
+  swap,
   postId,
   userId,
   score,
@@ -110,6 +111,7 @@ const Post = ({
             @{author?.username} ·{' '}
           </Text>
           <Text style={[styles.dateText, { color: colors.text }]}>{moment(created).fromNow()}</Text>
+          {swap && <Text style={[styles.dateText, { color: colors.text }]}> · Swap post</Text>}
         </View>
         <View style={styles.headerRight}>
           {deleteButton && author?.id === authState.userInfo.id && (

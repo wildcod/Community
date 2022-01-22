@@ -74,6 +74,7 @@ const PostDetail = ({ route, navigation }) => {
             keyExtractor={item => item.id}
             ListHeaderComponent={
               <Post
+                swap={post.swap}
                 postId={post.id}
                 userId={authState && authState.userInfo && authState.userInfo.id}
                 score={post.score}
