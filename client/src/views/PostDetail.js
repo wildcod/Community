@@ -10,6 +10,7 @@ import CommentListItem from '../components/CommentListItem'
 import CreateComment from '../components/CreateComment'
 import CommentLoader from '../components/CommentLoader'
 import PostLoader from '../components/PostLoader'
+import { fcmService } from '../utils/FCMService'
 
 const PostDetail = ({ route, navigation }) => {
   const { authState } = React.useContext(AuthContext)
@@ -43,7 +44,20 @@ const PostDetail = ({ route, navigation }) => {
       comment
     })
     setPost(data)
+    handleSendNotification(comment)
     setComment('')
+  }
+
+  const handleSendNotification = () => {
+    const payload = {
+      remoteUser: post.author
+    }
+    fcmService.sendNotification(
+      payload,
+      [post.author.fcmToken],
+      post.author.username,
+      `${post.author.username} commented on your post.\n${comment}`
+    )
   }
 
   const deleteComment = async commentId => {

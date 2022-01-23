@@ -13,6 +13,7 @@ import {
 import { AuthContext } from '../../../context/authContext'
 import axios from '../../../utils/fetcher'
 import styles from './styles'
+import { fcmService } from '../../../utils/FCMService'
 
 export default function({ navigation, users, setUsers }) {
   const { authState, setAuthState } = useContext(AuthContext)
@@ -56,8 +57,19 @@ const Tile = ({ item, navigation }) => {
     setLoading(false)
     const data = await response.data
     if (data.status === 'success') {
+      handleSendNotification()
       setIsRequested(true)
     }
+  }
+
+  const handleSendNotification = () => {
+    const payload = { remoteUser: item }
+    fcmService.sendNotification(
+      payload,
+      [item.fcmToken],
+      item.username,
+      `${item.username} sent you a friend request`
+    )
   }
 
   return item.id === authState.userInfo.id ? (
@@ -65,7 +77,7 @@ const Tile = ({ item, navigation }) => {
   ) : (
     <>
       <View style={styles.friendTile}>
-        <View style={{ flexDirection: 'row' }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Image
             style={styles.avatar}
             source={{

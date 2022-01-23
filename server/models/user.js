@@ -8,7 +8,8 @@ const userModel = new Schema({
   friends: { type: Array, required: false },
   requests: { type: Array, required: false },
   rooms: { type: Array, required: false },
-  role: { type: String, required: true, default: 'user' }
+  role: { type: String, required: true, default: 'user' },
+  fcmToken: { type: String }
 });
 
 userModel.set('toJSON', { getters: true });

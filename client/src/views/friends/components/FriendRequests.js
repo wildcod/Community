@@ -6,12 +6,14 @@ import {
   StatusBar,
   FlatList,
   TouchableWithoutFeedback,
-  ActivityIndicator
+  ActivityIndicator,
+  Image
 } from 'react-native'
 import { AuthContext } from '../../../context/authContext'
 import styles from './styles'
 import axios from '../../../utils/fetcher'
 import AsyncStorage from '@react-native-community/async-storage'
+import { fcmService } from '../../../utils/FCMService'
 
 export default function({ navigation }) {
   const { colors } = useTheme()
@@ -60,16 +62,42 @@ const Tile = ({ item, navigation }) => {
     setLoading(false)
     if (data.status === 'success') {
       setAccepted(true)
+      handleSendNotification()
       // setRequests(prev => prev.filter(({ id }) => id !== item.id))
       setAuthState({ ...authState, userInfo: data.user })
       await AsyncStorage.setItem('userInfo', JSON.stringify(data.user))
     }
   }
 
+  const handleSendNotification = () => {
+    const payload = { remoteUser: item }
+    fcmService.sendNotification(
+      payload,
+      [item.fcmToken],
+      item.username,
+      `${item.username} accepted your friend request`
+    )
+  }
+
   return (
     <>
       <View style={styles.friendTile}>
-        <Text style={[styles.friendName, { color: colors.text }]}>{item.username}</Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Image
+            style={styles.avatar}
+            source={{
+              uri: item.avatar
+                ? item.avatar.slice(0, 16) === 'https://https://'
+                  ? item.avatar.slice(8)
+                  : item.avatar
+                : 'https://100k-faces.glitch.me/random-image'
+            }}
+          />
+          <Text style={[styles.friendName, { marginLeft: 15, fontSize: 18, color: colors.text }]}>
+            {item.username}
+          </Text>
+        </View>
+
         {accepted ? (
           <TouchableWithoutFeedback
             onPress={() => navigation.navigate('Chat', { remoteUser: item })}

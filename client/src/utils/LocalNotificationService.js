@@ -34,6 +34,14 @@ class LocalNotificationService {
     PushNotification.unregister()
   }
 
+  showNotification = (id, title, message, data, token, options = {}) => {
+    PushNotification.localNotification({
+      ...(Platform.OS === 'android' ? this.buildAndroidNotification : this.buildIOSNotification),
+      title: title,
+      message: message
+    })
+  }
+
   scheduleNotification = (id, title, message, data, token, options = {}) => {
     PushNotification.scheduleLocalNotification({
       ...(Platform.OS === 'android' ? this.buildAndroidNotification : this.buildIOSNotification),

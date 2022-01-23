@@ -27,6 +27,10 @@ class FCMService {
     await messaging().requestPermission()
   }
 
+  getToken = async () => {
+    return await messaging().getToken()
+  }
+
   checkToken = async (token, notifID) => {
     const fcmToken = await messaging().getToken()
     console.log('fcmToken', fcmToken)

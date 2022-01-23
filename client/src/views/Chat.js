@@ -6,6 +6,7 @@ import { GiftedChat } from 'react-native-gifted-chat'
 import { AuthContext } from '../context/authContext'
 import { updateMessages } from '../utils/firebase'
 import { renderComposer, renderInputToolbar } from './chatComponents.'
+import { fcmService } from '../utils/FCMService'
 
 function sortString(str) {
   var arr = str.split('')
@@ -78,8 +79,14 @@ export default function Chat({ route, navigation }) {
 
   const onSend = useCallback(async (messages = []) => {
     setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
+    handleSendNotification(messages[0].text)
     await updateMessages(sortedId, messages[0])
   }, [])
+
+  const handleSendNotification = message => {
+    const payload = { remoteUser }
+    fcmService.sendNotification(payload, [remoteUser.fcmToken], remoteUser.username, message)
+  }
 
   const renderLoading = () => (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>

@@ -16,13 +16,14 @@ exports.signup = async (req, res) => {
   }
 
   try {
-    const { username, avatar } = req.body;
+    const { username, avatar, fcmToken } = req.body;
 
     const hashedPassword = await hashPassword(req.body.password);
 
     const userData = {
       username: username.toLowerCase(),
       avatar,
+      fcmToken,
       password: hashedPassword
     };
 

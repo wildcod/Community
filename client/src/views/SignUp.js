@@ -23,6 +23,7 @@ import { AuthContext } from '../context/authContext'
 import ImagePicker from 'react-native-image-crop-picker'
 import { Plus } from '../components/icons'
 import uploadImage from '../utils/uploadImage'
+import { fcmService } from '../utils/FCMService'
 
 const SignUp = ({ navigation }) => {
   const { setStorage } = React.useContext(AuthContext)
@@ -49,7 +50,12 @@ const SignUp = ({ navigation }) => {
     try {
       const uploadImageResponse = await uploadImage(avatar)
       if (uploadImageResponse.err) return err
-      const { data } = await axios.post('signup', { ...values, avatar: uploadImageResponse.url })
+      const fcmToken = await fcmService.getToken()
+      const { data } = await axios.post('signup', {
+        ...values,
+        avatar: uploadImageResponse.url,
+        fcmToken
+      })
       const { token, expiresAt, userInfo } = data
 
       setStorage(token, expiresAt, userInfo)
