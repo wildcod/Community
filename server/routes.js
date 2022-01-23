@@ -20,6 +20,7 @@ router.post('/user/unfriend', users.unfriend);
 router.post('/user/request/accept', users.acceptRequest);
 router.post('/user/request/decline', users.declineRequest);
 router.get('/users', users.getUsers);
+router.post(`/user/:id`, users.updateUser);
 
 //Authentication
 router.post('/signup', users.validate, users.signup);

@@ -30,7 +30,6 @@ const Home = () => {
     const { data } = await axios.get(
       !category || category === 'all' ? 'posts' : `posts/${category}`
     )
-    console.log('postdata', data)
     setPostData(data)
     setIsLoaading(false)
   }, [category])

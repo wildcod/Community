@@ -1,27 +1,25 @@
-import 'react-native-gesture-handler'
-import * as React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { NavigationContainer } from '@react-navigation/native'
 import {
+  CardStyleInterpolators,
   createStackNavigator,
-  TransitionPresets,
-  CardStyleInterpolators
+  TransitionPresets
 } from '@react-navigation/stack'
-
-import { ThemeContext } from './context/themeSwichContext'
-import DefaultTheme from './constants/default-theme'
-import DarkTheme from './constants/dark-theme'
-
+import * as React from 'react'
+import 'react-native-gesture-handler'
 import TabBar from './components/TabBar'
+import DarkTheme from './constants/dark-theme'
+import DefaultTheme from './constants/default-theme'
+import { ThemeContext } from './context/themeSwichContext'
+import ChatScreen from './views/Chat'
+import CreatePostScreen from './views/CreatePost'
+import FriendsScreens from './views/friends'
 import HomeScreen from './views/Home'
 import PostDetail from './views/PostDetail'
-import CreatePostScreen from './views/CreatePost'
-import UserScreen from './views/User'
-import SignModal from './views/SignModal'
 import SignInScreen from './views/SignIn'
+import SignModal from './views/SignModal'
 import SignUpScreen from './views/SignUp'
-import ChatScreen from './views/Chat'
-import FriendsScreens from './views/friends'
+import UserScreen from './views/User'
 
 const Tab = createBottomTabNavigator()
 const HomeStack = createStackNavigator()

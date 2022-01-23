@@ -220,11 +220,13 @@ exports.unfriend = async (req, res) => {
     const localUser = await User.findById(userId);
     if (!remoteUser)
       return res.status(403).json({
-        message: 'User to follow not found'
+        message: 'User to follow not found',
+        status: 'error'
       });
     if (!localUser)
       return res.status(403).json({
-        message: 'User not found'
+        message: 'User not found',
+        status: 'error'
       });
 
     const remoteIndex = remoteUser.followers.findIndex((id) => id === userId);
@@ -242,7 +244,8 @@ exports.unfriend = async (req, res) => {
     });
   } catch (error) {
     return res.status(400).json({
-      message: 'Something went wrong.'
+      message: 'Something went wrong.',
+      status: 'error'
     });
   }
 };
@@ -253,14 +256,16 @@ exports.getUser = async (req, res) => {
     const user = await User.findById(id);
     if (!user)
       return res.status(403).json({
-        message: 'User not found'
+        message: 'User not found',
+        status: 'error'
       });
     return res.json({
       user
     });
   } catch (error) {
     return res.status(400).json({
-      message: 'Something went wrong.'
+      message: 'Something went wrong.',
+      status: 'error'
     });
   }
 };
@@ -274,7 +279,31 @@ exports.getUsers = async (req, res) => {
     res.send({ users, status: 'success' });
   } catch (error) {
     return res.status(400).json({
-      message: 'Something went wrong.'
+      message: 'Something went wrong.',
+      status: 'error'
+    });
+  }
+};
+
+exports.updateUser = async (req, res) => {
+  try {
+    const data = await req.body;
+    const { id } = await req.params;
+    const user = await User.findById(id);
+    if (!user)
+      return res.status(403).json({
+        status: 'error',
+        message: 'User not found'
+      });
+    for (key in data) {
+      user[key] = data[key];
+    }
+    await user.save();
+    res.send({ data: user, users, status: 'success' });
+  } catch (error) {
+    return res.status(400).json({
+      message: 'Something went wrong.',
+      status: 'error'
     });
   }
 };
