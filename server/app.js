@@ -15,6 +15,8 @@ require('./routes.js')(app);
 
 require('./cron.js');
 
+app.get('/', (req, res) => res.send('Testing...'));
+
 app.listen(3000, () => console.log('listening on 3000'));
 
 module.exports = app;
