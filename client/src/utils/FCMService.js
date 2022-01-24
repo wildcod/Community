@@ -2,10 +2,10 @@ import messaging from '@react-native-firebase/messaging'
 import { Platform } from 'react-native'
 
 class FCMService {
-  register = onOpenNotification => {
+  register = (onNotification, onOpenNotification) => {
     this.checkPermission()
     this.createNotificationListeners(onOpenNotification)
-    this.tokenRefresh
+    // this.tokenRefresh
     messaging().onMessageSent(evt => {})
   }
 
@@ -52,7 +52,7 @@ class FCMService {
       if (remoteMessage) {
         const notification = remoteMessage
         onOpenNotification(notification)
-        this.removeDeliveredNotification(notification.notificationId)
+        // this.removeDeliveredNotification(notification.notificationId)
       }
     })
 

@@ -50,7 +50,8 @@ const PostDetail = ({ route, navigation }) => {
 
   const handleSendNotification = () => {
     const payload = {
-      remoteUser: post.author
+      remoteUser: post.author,
+      type: 'comment'
     }
     fcmService.sendNotification(
       payload,

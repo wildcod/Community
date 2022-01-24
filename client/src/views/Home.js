@@ -14,8 +14,9 @@ import CategoryLoader from '../components/CategoryLoader'
 import JoinRoom from '../components/JoinRoom'
 import { RoomContext } from '../context/roomContext'
 import instanceAxios from '../utils/fetcher'
+import messaging from '@react-native-firebase/messaging'
 
-const Home = () => {
+const Home = ({ navigation }) => {
   const { authState } = useContext(AuthContext)
   const { theme } = useContext(ThemeContext)
   const { colors } = useTheme()
@@ -24,6 +25,24 @@ const Home = () => {
   const [category, setCategory] = React.useState('all')
   const [isLoading, setIsLoaading] = React.useState(false)
   const [showJoinRoom, setShowJoinRoom] = React.useState(false)
+
+  useEffect(() => {
+    checkNotification()
+  }, [])
+
+  const checkNotification = async () => {
+    messaging().onNotificationOpenedApp(remoteMessage => {
+      console.log('onNotificationOpenedApp', remoteMessage)
+      const { data } = remoteMessage
+      const { type, remoteUser } = data
+      const remoteUserJson = JSON.parse(remoteUser)
+      console.log('remoteUserJson', remoteUserJson)
+      switch (type) {
+        case 'message':
+          return navigation.navigate('Chat', { remoteUser: remoteUserJson })
+      }
+    })
+  }
 
   const getPostData = React.useCallback(async () => {
     setIsLoaading(true)

@@ -84,7 +84,7 @@ export default function Chat({ route, navigation }) {
   }, [])
 
   const handleSendNotification = message => {
-    const payload = { remoteUser }
+    const payload = { remoteUser: authState.userInfo, type: 'message' }
     fcmService.sendNotification(payload, [remoteUser.fcmToken], remoteUser.username, message)
   }
 
@@ -104,9 +104,11 @@ export default function Chat({ route, navigation }) {
         onSend={messages => onSend(messages)}
         user={{
           _id: authState.userInfo.id,
-          name: authState.userInfo.username
+          name: authState.userInfo.username,
+          avatar: authState.userInfo.avatar
         }}
         showAvatarForEveryMessage={true}
+        showUserAvatar={true}
         renderComposer={props => renderComposer(props, colors.text, colors.background)}
         renderInputToolbar={props => renderInputToolbar(props, colors.background)}
       />

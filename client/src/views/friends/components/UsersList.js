@@ -63,7 +63,7 @@ const Tile = ({ item, navigation }) => {
   }
 
   const handleSendNotification = () => {
-    const payload = { remoteUser: item }
+    const payload = { remoteUser: authState.userInfo, type: 'request' }
     fcmService.sendNotification(
       payload,
       [item.fcmToken],

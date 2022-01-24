@@ -6,6 +6,7 @@ import {
   TransitionPresets
 } from '@react-navigation/stack'
 import * as React from 'react'
+import { Linking } from 'react-native'
 import 'react-native-gesture-handler'
 import TabBar from './components/TabBar'
 import DarkTheme from './constants/dark-theme'
@@ -20,6 +21,7 @@ import SignInScreen from './views/SignIn'
 import SignModal from './views/SignModal'
 import SignUpScreen from './views/SignUp'
 import UserScreen from './views/User'
+import messaging from '@react-native-firebase/messaging'
 
 const Tab = createBottomTabNavigator()
 const HomeStack = createStackNavigator()
@@ -75,7 +77,25 @@ function HomeScreens() {
   )
 }
 
-function MyTabs() {
+function MyTabs({ navigation }) {
+  React.useEffect(() => {
+    checkNotification()
+  }, [])
+
+  const checkNotification = async () => {
+    messaging().onNotificationOpenedApp(remoteMessage => {
+      console.log('onNotificationOpenedApp', remoteMessage)
+      const { data } = remoteMessage
+      const { type } = data
+      switch (type) {
+        case 'request':
+          return navigation.navigate('Friends')
+        case 'accepted':
+          return navigation.navigate('Friends')
+      }
+    })
+  }
+
   return (
     <Tab.Navigator
       tabBar={props => <TabBar {...props} />}

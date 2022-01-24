@@ -10,6 +10,7 @@ import axios from '../../utils/fetcher'
 import Input from './components/search/components/Input'
 import { AuthContext } from '../../context/authContext'
 import AwesomeDebouncePromise from 'awesome-debounce-promise'
+import messaging from '@react-native-firebase/messaging'
 
 export function Friends({ navigation }) {
   const { colors } = useTheme()
@@ -17,6 +18,22 @@ export function Friends({ navigation }) {
   const [users, setUsers] = useState([])
   const friends = useRef([])
   const [query, setQuery] = useState('')
+
+  React.useEffect(() => {
+    checkNotification()
+  }, [])
+
+  const checkNotification = async () => {
+    messaging().onNotificationOpenedApp(remoteMessage => {
+      console.log('onNotificationOpenedApp', remoteMessage)
+      const { data } = remoteMessage
+      const { type } = data
+      switch (type) {
+        case 'request':
+          return navigation.navigate('FriendRequests')
+      }
+    })
+  }
 
   useEffect(() => {
     handleGetData()

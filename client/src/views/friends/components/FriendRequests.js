@@ -7,18 +7,21 @@ import {
   FlatList,
   TouchableWithoutFeedback,
   ActivityIndicator,
-  Image
+  Image,
+  RefreshControl
 } from 'react-native'
 import { AuthContext } from '../../../context/authContext'
 import styles from './styles'
 import axios from '../../../utils/fetcher'
 import AsyncStorage from '@react-native-community/async-storage'
 import { fcmService } from '../../../utils/FCMService'
+import instanceAxios from '../../../utils/fetcher'
 
 export default function({ navigation }) {
   const { colors } = useTheme()
-  const { authState } = useContext(AuthContext)
+  const { authState, setAuthState } = useContext(AuthContext)
   const [requests, setRequests] = useState([])
+  const [refreshing, setRefreshing] = useState(false)
 
   useEffect(() => {
     handleGetData()
@@ -35,6 +38,18 @@ export default function({ navigation }) {
     <Tile item={item} navigation={navigation} setRequests={setRequests} />
   )
 
+  const refreshControl = <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+
+  const onRefresh = async () => {
+    setRefreshing(true)
+    if (!authState || !authState.userInfo) return
+    const response = await instanceAxios.get(`user/id/${authState.userInfo.id}`)
+    const data = await response.data
+    setAuthState({ ...authState, userInfo: data.user })
+    await AsyncStorage.setItem('userInfo', JSON.stringify(data.user))
+    setRefreshing(false)
+  }
+
   return (
     <View style={styles.screen}>
       <StatusBar backgroundColor={colors.card} />
@@ -42,6 +57,7 @@ export default function({ navigation }) {
         data={requests}
         keyExtractor={(item, index) => index.toString()}
         renderItem={renderItem}
+        refreshControl={refreshControl}
       />
     </View>
   )
@@ -70,7 +86,7 @@ const Tile = ({ item, navigation }) => {
   }
 
   const handleSendNotification = () => {
-    const payload = { remoteUser: item }
+    const payload = { remoteUser: authState.userInfo, type: 'accepted' }
     fcmService.sendNotification(
       payload,
       [item.fcmToken],
