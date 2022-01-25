@@ -17,6 +17,7 @@ import * as Yup from 'yup'
 
 import Button from '../components/Button'
 import { AuthContext } from '../context/authContext'
+import { fcmService } from '../utils/FCMService'
 
 const SignIn = ({ navigation }) => {
   const { setStorage } = React.useContext(AuthContext)
@@ -30,7 +31,8 @@ const SignIn = ({ navigation }) => {
         onSubmit={async (values, { setStatus, resetForm }) => {
           setIsLoading(true)
           try {
-            const { data } = await axios.post('authenticate', values)
+            const fcmToken = await fcmService.getToken()
+            const { data } = await axios.post('authenticate', { ...values, fcmToken })
             const { token, expiresAt, userInfo } = data
             setStorage(token, expiresAt, userInfo)
             navigation.navigate('Home')

@@ -78,10 +78,15 @@ exports.authenticate = async (req, res) => {
     return res.status(422).json({ errors });
   }
   try {
-    const { username, password } = req.body;
+    const { username, password, fcmToken } = req.body;
     const user = await User.findOne({
       username: username.toLowerCase()
     });
+
+    const user = await User.findOneAndUpdate(
+      { username: username.toLowerCase() },
+      { fcmToken }
+    );
 
     console.log('user', user);
 
