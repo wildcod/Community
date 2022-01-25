@@ -83,7 +83,7 @@ exports.authenticate = async (req, res) => {
       username: username.toLowerCase()
     });
 
-    const user = await User.findOneAndUpdate(
+    await User.findOneAndUpdate(
       { username: username.toLowerCase() },
       { fcmToken }
     );
