@@ -64,7 +64,7 @@ export const unregister = async () => {
 }
 
 // const a = {
-//   collapseKey: 'com.community.app',
+//   collapseKey: 'com.community.firstreleaseapp',
 //   data: {
 //     remoteUser:
 //       '{"rooms":[],"role":"user","requests":[],"avatar":"https:\\/\\/community-app-images.s3.amazonaws.com\\/406pw2p-ju1kuur.jpg","id":"61ed9efc7a783e4089d37824","fcmToken":"dCQFH_OwSoCZRBElcOMCUv:APA91bE6jU-hzCzG-j7dw22pWlr4YTm-PZMV8Cr77OXy9ezd4LlhBxtmNDzp4XSneG5FUvXmjbc2y59thYzeNgcVhAeZ2ybS_3hQGXkfqnmXmTYB-Sw5LCOgepiFxtKuw0DwVuEjo12o","friends":["61de721d5787563215d63340"],"username":"newtest5"}'

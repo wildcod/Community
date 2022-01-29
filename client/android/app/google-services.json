@@ -7,46 +7,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1077906348478:android:0ae0c9dda1d08c9b4981ef",
+        "mobilesdk_app_id": "1:1077906348478:android:a738498822d40afd4981ef",
         "android_client_info": {
-          "package_name": "com.client"
+          "package_name": "com.community.firstreleaseapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1077906348478-shp62am8q61nnf9om1lnq8obge7uv0op.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyD_8WvEUwNOajS_cQz4MikHtAaAMpTVcs8"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "1077906348478-shp62am8q61nnf9om1lnq8obge7uv0op.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:1077906348478:android:be438948b2ded9904981ef",
-        "android_client_info": {
-          "package_name": "com.community.app"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "1077906348478-cana09nnibdi894qhdb57rl4lv7c2j07.apps.googleusercontent.com",
+          "client_id": "1077906348478-olmpvjnlfq8l5ooaakn31al9el2m3lb0.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.community.app",
+            "package_name": "com.community.firstreleaseapp",
             "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
           }
         },
@@ -66,6 +37,13 @@
             {
               "client_id": "1077906348478-shp62am8q61nnf9om1lnq8obge7uv0op.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1077906348478-bjf4hm08gk0703aot97nhfi92jejucpg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.community.firstreleaseapp"
+              }
             }
           ]
         }

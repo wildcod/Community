@@ -1,4 +1,4 @@
-package com.community.app;
+package com.community.firstreleaseapp;
 
 import com.facebook.react.ReactActivity;
 
