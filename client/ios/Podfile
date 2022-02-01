@@ -87,12 +87,12 @@ target 'client' do
   pod 'RNImageCropPicker', :path => '../node_modules/react-native-image-crop-picker'
 
   pod 'RNCClipboard', :path => '../node_modules/@react-native-clipboard/clipboard'
-
   pod 'RNFBApp', :path => '../node_modules/@react-native-firebase/app'
+  pod 'Firebase/Messaging'
+  pod 'Firebase/Firestore'
 
-  pod 'RNFBMessaging', :path => '../node_modules/@react-native-firebase/messaging'
 
-  pod 'RNFBFirestore', :path => '../node_modules/@react-native-firebase/firestore'
+
 
   pod 'RNCPushNotificationIOS', :path => '../node_modules/@react-native-community/push-notification-ios'
 
