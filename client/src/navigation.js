@@ -126,7 +126,7 @@ function RootScreen() {
       style={{
         flex: 1,
         backgroundColor:
-          theme === 'light' ? DefaultTheme.colors.background : DarkTheme.colors.background
+          theme === 'light' ? DefaultTheme.colors.bgColor : DarkTheme.colors.bgColor
       }}
     >
       <NavigationContainer linking={linking} theme={theme === 'light' ? DefaultTheme : DarkTheme}>
