@@ -7,6 +7,7 @@ export default StyleSheet.create({
   },
   input: {
     width,
+    paddingVertical:15 ,
     paddingHorizontal: 15,
     fontSize: 16,
     borderBottomColor: 'rgb(55,55,55)',
