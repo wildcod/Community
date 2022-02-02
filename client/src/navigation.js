@@ -23,6 +23,7 @@ import SignUpScreen from './views/SignUp'
 import UserScreen from './views/User'
 import messaging from '@react-native-firebase/messaging'
 import { SafeAreaView } from 'react-native'
+import { useTheme } from '@react-navigation/native'
 
 const Tab = createBottomTabNavigator()
 const HomeStack = createStackNavigator()

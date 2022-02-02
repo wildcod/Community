@@ -10,7 +10,6 @@ import { RoomProvider } from './context/roomContext'
 import { ThemeProvider } from './context/themeSwichContext'
 import Navigation from './navigation'
 import { initializeFCM } from './utils/fcmFunctions'
-import { useTheme } from '@react-navigation/native'
 
 const App = () => {
   React.useEffect(() => {
