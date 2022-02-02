@@ -22,6 +22,7 @@ import SignModal from './views/SignModal'
 import SignUpScreen from './views/SignUp'
 import UserScreen from './views/User'
 import messaging from '@react-native-firebase/messaging'
+import { SafeAreaView } from 'react-native'
 
 const Tab = createBottomTabNavigator()
 const HomeStack = createStackNavigator()
@@ -113,27 +114,36 @@ function MyTabs({ navigation }) {
 
 function RootScreen() {
   const { theme } = React.useContext(ThemeContext)
+  const { colors } = useTheme()
 
   const linking = {
     prefixes: ['https://app.community.client.com']
   }
 
   return (
-    <NavigationContainer linking={linking} theme={theme === 'light' ? DefaultTheme : DarkTheme}>
-      <RootStack.Navigator
-        screenOptions={{
-          headerShown: false,
-          cardStyle: { backgroundColor: 'transparent' },
-          cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
-          gestureEnabled: true,
-          gestureDirection: 'vertical'
-        }}
-        mode="modal"
-      >
-        <RootStack.Screen name="Tab" component={MyTabs} />
-        <RootStack.Screen name="SignModal" component={SignScreens} />
-      </RootStack.Navigator>
-    </NavigationContainer>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor:
+          theme === 'light' ? DefaultTheme.colors.background : DarkTheme.colors.background
+      }}
+    >
+      <NavigationContainer linking={linking} theme={theme === 'light' ? DefaultTheme : DarkTheme}>
+        <RootStack.Navigator
+          screenOptions={{
+            headerShown: false,
+            cardStyle: { backgroundColor: 'transparent' },
+            cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
+            gestureEnabled: true,
+            gestureDirection: 'vertical'
+          }}
+          mode="modal"
+        >
+          <RootStack.Screen name="Tab" component={MyTabs} />
+          <RootStack.Screen name="SignModal" component={SignScreens} />
+        </RootStack.Navigator>
+      </NavigationContainer>
+    </SafeAreaView>
   )
 }
 
