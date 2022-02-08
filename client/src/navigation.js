@@ -24,6 +24,8 @@ import UserScreen from './views/User'
 import messaging from '@react-native-firebase/messaging'
 import { SafeAreaView } from 'react-native'
 import { useTheme } from '@react-navigation/native'
+import Terms from './components/Terms'
+import AsyncStorage from '@react-native-community/async-storage'
 
 const Tab = createBottomTabNavigator()
 const HomeStack = createStackNavigator()
@@ -115,20 +117,26 @@ function MyTabs({ navigation }) {
 
 function RootScreen() {
   const { theme } = React.useContext(ThemeContext)
-  const { colors } = useTheme()
+  const [accepted, setAccepted] = React.useState(false)
 
   const linking = {
     prefixes: ['https://app.community.client.com']
   }
 
+  React.useEffect(() => {
+    AsyncStorage.getItem('terms').then(data => {
+      setAccepted(data && data === 'accepted')
+    })
+  }, [])
+
   return (
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor:
-          theme === 'light' ? DefaultTheme.colors.bgColor : DarkTheme.colors.bgColor
+        backgroundColor: theme === 'light' ? DefaultTheme.colors.bgColor : DarkTheme.colors.bgColor
       }}
     >
+      <Terms visible={!accepted} />
       <NavigationContainer linking={linking} theme={theme === 'light' ? DefaultTheme : DarkTheme}>
         <RootStack.Navigator
           screenOptions={{
