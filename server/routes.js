@@ -3,11 +3,14 @@ const posts = require('./controllers/posts');
 const votes = require('./controllers/votes');
 const comments = require('./controllers/comments');
 const rooms = require('./controllers/rooms');
+const reports = require('./controllers/reports');
 const requireAuth = require('./middlewares/requireAuth');
 const postAuth = require('./middlewares/postAuth');
 const commentAuth = require('./middlewares/commentAuth');
 
 const router = require('express').Router();
+
+router.post('/report', reports.createReport);
 
 router.get('/user/id/:id', users.getUser);
 

@@ -7,7 +7,9 @@ import moment from 'moment'
 import axios from '../utils/fetcher'
 import { AuthContext } from '../context/authContext'
 
-import { ArrowDown, ArrowUp, MessageSquare, Trash } from './icons/index'
+import { ArrowDown, ArrowUp, MessageSquare, Settings, Trash } from './icons/index'
+import SvgArrowDown from './icons/ArrowDown'
+import SettingsMenu from './SettingsMenu'
 
 const Post = ({
   index,
@@ -100,6 +102,10 @@ const Post = ({
         { backgroundColor: colors.bgColor, borderColor: colors.postBorder }
       ]}
     >
+      <View style={{ position: 'absolute', right: 15, top: 10 }}>
+        {/* <Settings fill={colors.primary} /> */}
+        <SettingsMenu />
+      </View>
       <View style={styles.headerContainer}>
         <View style={styles.headerLeft}>
           <Text style={[styles.regularFont, { color: colors.text }]}>{category} </Text>
