@@ -12,7 +12,7 @@ import Modal from 'react-native-modal'
 import { Settings } from './icons'
 import Report from './Report'
 
-export default function SettingsMenu() {
+export default function SettingsMenu({ postId }) {
   const { colors } = useTheme()
   const [visible, setVisible] = useState(false)
   const [showReportMenu, setShowReportMenu] = useState(false)
@@ -28,7 +28,12 @@ export default function SettingsMenu() {
 
   return (
     <View>
-      <Report visible={showReportMenu} setVisible={setShowReportMenu} />
+      <Report
+        visible={showReportMenu}
+        setOuterVisible={setVisible}
+        setVisible={setShowReportMenu}
+        postId={postId}
+      />
       <Modal
         isVisible={visible}
         style={{

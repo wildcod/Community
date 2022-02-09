@@ -7,7 +7,7 @@ import instanceAxios from '../utils/fetcher'
 import { AuthContext } from '../context/authContext'
 const { height, width } = Dimensions.get('screen')
 
-export default function Report({ visible, setVisible }) {
+export default function Report({ visible, setVisible, postId, setOuterVisible }) {
   const { colors } = useTheme()
   const { authState } = React.useContext(AuthContext)
   const [reason, setReason] = useState('')
@@ -16,8 +16,13 @@ export default function Report({ visible, setVisible }) {
 
   const handleReport = async () => {
     setIsLoading(true)
-    const payload = {}
-    const response = await instanceAxios.post('report')
+    const payload = { reason, userId: authState.userInfo.id, postId }
+    const response = await instanceAxios.post('report', payload)
+    const data = await response.data
+    setIsLoading(false)
+    setVisible(false)
+    setOuterVisible(false)
+    console.log('response data', data)
   }
 
   return (
@@ -31,6 +36,7 @@ export default function Report({ visible, setVisible }) {
         maxHeight: height * 0.25,
         top: '35%'
       }}
+      onBackdropPress={() => setVisible(false)}
     >
       <Text style={[styles.text, { color: colors.text }]}>Tell us why this is inapproriate?</Text>
       <TextInput

@@ -104,7 +104,7 @@ const Post = ({
     >
       <View style={{ position: 'absolute', right: 15, top: 10 }}>
         {/* <Settings fill={colors.primary} /> */}
-        <SettingsMenu />
+        <SettingsMenu postId={postId} />
       </View>
       <View style={styles.headerContainer}>
         <View style={styles.headerLeft}>
