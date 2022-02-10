@@ -16,14 +16,14 @@ export default function SettingsMenu({ userId }) {
 
   const handleBlock = () => {
     setVisible(false)
-    setShowReportMenu(true)
+    setShowBlockMenu(true)
   }
 
   return (
     <View>
       <Block
         setOuterVisible={setVisible}
-        visible={setShowBlockMenu}
+        visible={showBlockMenu}
         setVisible={setShowBlockMenu}
         userId={userId}
       />

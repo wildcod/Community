@@ -31,7 +31,9 @@ const Post = ({
   setData,
   postType,
   deleteButton,
-  deletePost
+  deletePost,
+  detail,
+  _navigation
 }) => {
   const { colors } = useTheme()
   const navigation = useNavigation()
@@ -104,7 +106,7 @@ const Post = ({
     >
       <View style={{ position: 'absolute', right: 15, top: 10 }}>
         {/* <Settings fill={colors.primary} /> */}
-        <SettingsMenu postId={postId} />
+        <SettingsMenu postId={postId} navigation={_navigation} />
       </View>
       <View style={styles.headerContainer}>
         <View style={styles.headerLeft}>

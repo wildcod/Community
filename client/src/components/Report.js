@@ -8,7 +8,7 @@ import { AuthContext } from '../context/authContext'
 import AsyncStorage from '@react-native-community/async-storage'
 const { height, width } = Dimensions.get('screen')
 
-export default function Report({ visible, setVisible, postId, setOuterVisible }) {
+export default function Report({ visible, setVisible, postId, setOuterVisible, navigation }) {
   const { colors } = useTheme()
   const { authState, setAuthState } = React.useContext(AuthContext)
   const [reason, setReason] = useState('')
@@ -25,6 +25,7 @@ export default function Report({ visible, setVisible, postId, setOuterVisible })
     setIsLoading(false)
     setVisible(false)
     setOuterVisible(false)
+    navigation.goBack()
     setAuthState({ ...authState, userInfo: _user })
     await AsyncStorage.setItem('userInfo', JSON.stringify(_user))
     console.log('response data', data)
@@ -41,7 +42,6 @@ export default function Report({ visible, setVisible, postId, setOuterVisible })
         maxHeight: height * 0.25,
         top: '35%'
       }}
-      onBackdropPress={() => setVisible(false)}
     >
       <Text style={[styles.text, { color: colors.text }]}>Tell us why this is inapproriate?</Text>
       <TextInput
@@ -56,6 +56,9 @@ export default function Report({ visible, setVisible, postId, setOuterVisible })
         <Button onPress={handleReport} title="Report" bgColor={colors.primary}>
           {isLoading && <ActivityIndicator size="small" color="white" />}
         </Button>
+      </View>
+      <View style={{ flexDirection: 'row' }}>
+        <Button onPress={() => setVisible(false)} title="Cancel" bgColor={colors.primary} />
       </View>
     </Modal>
   )

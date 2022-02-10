@@ -2,7 +2,7 @@ import { View, Text, TextInput, StyleSheet, Dimensions, ActivityIndicator } from
 import React, { useState } from 'react'
 import Modal from 'react-native-modal'
 import { useTheme } from '@react-navigation/native'
-import Button from './Button'
+import Button from '../components/Button'
 import instanceAxios from '../utils/fetcher'
 import { AuthContext } from '../context/authContext'
 const { height, width } = Dimensions.get('screen')
@@ -10,13 +10,12 @@ const { height, width } = Dimensions.get('screen')
 export default function Block({ visible, setVisible, userId, setOuterVisible }) {
   const { colors } = useTheme()
   const { authState } = React.useContext(AuthContext)
-  const [reason, setReason] = useState('')
 
   const [isLoading, setIsLoading] = useState(false)
 
   const handleBlock = async () => {
     setIsLoading(true)
-    const payload = { reason, userId: authState.userInfo.id, userId }
+    const payload = { userId: authState.userInfo.id, userToBlockId: userId }
     const response = await instanceAxios.post('block', payload)
     const data = await response.data
     setIsLoading(false)
@@ -36,16 +35,15 @@ export default function Block({ visible, setVisible, userId, setOuterVisible }) 
         maxHeight: height * 0.25,
         top: '35%'
       }}
-      onBackdropPress={() => setVisible(false)}
     >
       <Text style={[styles.text, { color: colors.text }]}>Are you sure?</Text>
-      <View style={{ flexDirection: 'row', marginTop: 15 }}>
-        <Button onPress={() => setVisible(false)} title="No" bgColor={colors.primary} />
-      </View>
       <View style={{ flexDirection: 'row', marginTop: 15 }}>
         <Button onPress={handleBlock} title="Yes" bgColor={colors.primary}>
           {isLoading && <ActivityIndicator size="small" color="white" />}
         </Button>
+      </View>
+      <View style={{ flexDirection: 'row' }}>
+        <Button onPress={() => setVisible(false)} title="No" bgColor={colors.primary} />
       </View>
     </Modal>
   )
