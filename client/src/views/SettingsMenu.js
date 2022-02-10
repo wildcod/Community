@@ -5,7 +5,7 @@ import Modal from 'react-native-modal'
 import Block from './Block'
 import { Settings } from '../components/icons'
 
-export default function SettingsMenu({ userId }) {
+export default function SettingsMenu({ userId, navigation }) {
   const { colors } = useTheme()
   const [visible, setVisible] = useState(false)
   const [showBlockMenu, setShowBlockMenu] = useState(false)
@@ -22,6 +22,7 @@ export default function SettingsMenu({ userId }) {
   return (
     <View>
       <Block
+        navigation={navigation}
         setOuterVisible={setVisible}
         visible={showBlockMenu}
         setVisible={setShowBlockMenu}

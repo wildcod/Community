@@ -46,7 +46,7 @@ export default function Chat({ route, navigation }) {
       headerRight: () => (
         <TouchableWithoutFeedback onPress={() => setShowSettings(true)}>
           <View style={{ marginRight: 10 }}>
-            <SettingsMenu userId={remoteUser.id} />
+            <SettingsMenu navigation={navigation} userId={remoteUser.id} />
           </View>
         </TouchableWithoutFeedback>
       )

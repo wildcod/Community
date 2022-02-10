@@ -9,6 +9,7 @@ const userModel = new Schema({
   requests: { type: Array, required: false },
   rooms: { type: Array, required: false },
   reports: { type: Array, required: false },
+  blocks: { type: Array, required: false },
   role: { type: String, required: true, default: 'user' },
   fcmToken: { type: String }
 });

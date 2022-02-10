@@ -1,16 +1,17 @@
-const Block = require('../models/block');
+const User = require('../models/user');
 
 exports.blockUser = async (req, res) => {
   try {
     const { userId, userToBlockId } = await req.query;
-    const block = await Block.findOne({ userId });
-    block.blockedUsers
-      ? block.blockedUsers.push(userToBlockId)
-      : (block.blockedUsers = [userToBlockId]);
-    await block.save();
+    const user = await User.findById(userId);
+    user.blocks
+      ? user.blocks.push(userToBlockId)
+      : (user.blocks = [userToBlockId]);
+    await user.save();
     return res.send({
       status: 'success',
-      message: 'User blocked successfully'
+      message: 'User blocked successfully',
+      user
     });
   } catch (error) {
     return res.status(400).json({
