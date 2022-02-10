@@ -1120,10 +1120,10 @@
   dependencies:
     invariant "^2.2.4"
 
-"@react-native-firebase/app@^14.3.0":
-  version "14.3.0"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-14.3.0.tgz#a5021e2f0c03aef0d594c4f3d566612578ff6ced"
-  integrity sha512-b9CQw/RVDCLPepA/Veew1qXaWuGemT8nAWuZsZZhB8UfwgpvTmkeE/HSui3FC9Fz8tUWjbkkY+IRMSsKx2lS8g==
+"@react-native-firebase/app@^14.3.1":
+  version "14.3.1"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-14.3.1.tgz#4b735f4378d397d22c9b9847bd2a8fffc50a9609"
+  integrity sha512-6ma2NsGXv2p3w8WXjXwuYyehVB8LYXh+4J9AE1amsocYq9T7qnktCUIxa41J5mLxp4p0+EAtwS7xGeSwgYLrmg==
   dependencies:
     "@expo/config-plugins" "^4.0.16"
     opencollective-postinstall "^2.0.1"
