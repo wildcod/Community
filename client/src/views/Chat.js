@@ -1,12 +1,13 @@
 import firestore from '@react-native-firebase/firestore'
 import { useTheme } from '@react-navigation/native'
 import React, { useCallback, useContext, useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { ActivityIndicator, StatusBar, View } from 'react-native'
+import { ActivityIndicator, StatusBar, TouchableWithoutFeedback, View } from 'react-native'
 import { GiftedChat } from 'react-native-gifted-chat'
 import { AuthContext } from '../context/authContext'
 import { updateMessages } from '../utils/firebase'
 import { renderComposer, renderInputToolbar } from './chatComponents.'
 import { fcmService } from '../utils/FCMService'
+import SettingsMenu from './SettingsMenu'
 
 function sortString(str) {
   var arr = str.split('')
@@ -34,13 +35,21 @@ export default function Chat({ route, navigation }) {
   const uniqueString =
     authState.userInfo.id + remoteUser.id + authState.userInfo.username + remoteUser.username
   const sortedId = sortString(uniqueString)
+  const [showSettings, setShowSettings] = useState(false)
 
   useEffect(() => {
     navigation.setOptions({
       headerTitle: remoteUser.username,
       headerStyle: {
         backgroundColor: colors.bgColor
-      }
+      },
+      headerRight: () => (
+        <TouchableWithoutFeedback onPress={() => setShowSettings(true)}>
+          <View style={{ marginRight: 10 }}>
+            <SettingsMenu userId={remoteUser.id} />
+          </View>
+        </TouchableWithoutFeedback>
+      )
     })
   }, [])
 
