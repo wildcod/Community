@@ -16,11 +16,9 @@ export default function Block({ visible, setVisible, userId, setOuterVisible, na
 
   const handleBlock = async () => {
     setIsLoading(true)
-    const payload = {
-      userId: authState.userInfo.id,
-      userToBlockId: userId
-    }
-    const response = await instanceAxios.post('block', payload)
+    const response = await instanceAxios.post(
+      `block?userId=${authState.userInfo.id}&userToBlockId=${userId}`
+    )
     const data = await response.data
     const _user = data.user
     setIsLoading(false)

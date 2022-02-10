@@ -111,7 +111,9 @@ const Home = ({ navigation }) => {
             <Text style={[styles.empty, { color: colors.text }]}>Ups! Not found any post!</Text>
           }
           renderItem={({ item, index }) =>
-            authState.userInfo.reports && authState.userInfo.reports.indexOf(item.id) !== -1 ? (
+            (authState.userInfo.reports && authState.userInfo.reports.indexOf(item.id) !== -1) ||
+            (authState.userInfo.blocks &&
+              authState.userInfo.blocks.indexOf(item.author.id) !== -1) ? (
               <></>
             ) : (
               <Post
