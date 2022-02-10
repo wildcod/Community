@@ -8,7 +8,10 @@ exports.blockUser = async (req, res) => {
       ? block.blockedUsers.push(userToBlockId)
       : (block.blockedUsers = [userToBlockId]);
     await block.save();
-    return res.send({ type: 'success', message: 'User blocked successfully' });
+    return res.send({
+      status: 'success',
+      message: 'User blocked successfully'
+    });
   } catch (error) {
     return res.status(400).json({
       status: 'error',

@@ -40,9 +40,7 @@ export default function Block({ visible, setVisible, userId, setOuterVisible }) 
     >
       <Text style={[styles.text, { color: colors.text }]}>Are you sure?</Text>
       <View style={{ flexDirection: 'row', marginTop: 15 }}>
-        <Button onPress={handleBlock} title="No" bgColor={colors.primary}>
-          {isLoading && <ActivityIndicator size="small" color="white" />}
-        </Button>
+        <Button onPress={() => setVisible(false)} title="No" bgColor={colors.primary} />
       </View>
       <View style={{ flexDirection: 'row', marginTop: 15 }}>
         <Button onPress={handleBlock} title="Yes" bgColor={colors.primary}>

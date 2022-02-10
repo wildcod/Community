@@ -5,11 +5,12 @@ import { useTheme } from '@react-navigation/native'
 import Button from './Button'
 import instanceAxios from '../utils/fetcher'
 import { AuthContext } from '../context/authContext'
+import AsyncStorage from '@react-native-community/async-storage'
 const { height, width } = Dimensions.get('screen')
 
 export default function Report({ visible, setVisible, postId, setOuterVisible }) {
   const { colors } = useTheme()
-  const { authState } = React.useContext(AuthContext)
+  const { authState, setAuthState } = React.useContext(AuthContext)
   const [reason, setReason] = useState('')
 
   const [isLoading, setIsLoading] = useState(false)
@@ -19,9 +20,13 @@ export default function Report({ visible, setVisible, postId, setOuterVisible })
     const payload = { reason, userId: authState.userInfo.id, postId }
     const response = await instanceAxios.post('report', payload)
     const data = await response.data
+    if (data.status === 'error') return
+    const _user = data.user
     setIsLoading(false)
     setVisible(false)
     setOuterVisible(false)
+    setAuthState({ ...authState, userInfo: _user })
+    await AsyncStorage.setItem('userInfo', JSON.stringify(_user))
     console.log('response data', data)
   }
 

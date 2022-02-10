@@ -110,28 +110,32 @@ const Home = ({ navigation }) => {
           ListEmptyComponent={
             <Text style={[styles.empty, { color: colors.text }]}>Ups! Not found any post!</Text>
           }
-          renderItem={({ item, index }) => (
-            <Post
-              index={index}
-              swap={item.swap}
-              postId={item.id}
-              userId={authState && authState.userInfo && authState.userInfo.id}
-              score={item.score}
-              type={item.type}
-              title={item.title}
-              author={item.author}
-              category={item.category}
-              text={item.text}
-              comments={item.comments}
-              created={item.created}
-              url={item.url}
-              votes={item.votes}
-              views={item.views}
-              setIsLoaading={setIsLoaading}
-              setData={setPostData}
-              deleteButton={false}
-            />
-          )}
+          renderItem={({ item, index }) =>
+            authState.userInfo.reports && authState.userInfo.reports.indexOf(item.id) !== -1 ? (
+              <></>
+            ) : (
+              <Post
+                index={index}
+                swap={item.swap}
+                postId={item.id}
+                userId={authState && authState.userInfo && authState.userInfo.id}
+                score={item.score}
+                type={item.type}
+                title={item.title}
+                author={item.author}
+                category={item.category}
+                text={item.text}
+                comments={item.comments}
+                created={item.created}
+                url={item.url}
+                votes={item.votes}
+                views={item.views}
+                setIsLoaading={setIsLoaading}
+                setData={setPostData}
+                deleteButton={false}
+              />
+            )
+          }
         />
       ) : (
         <>
