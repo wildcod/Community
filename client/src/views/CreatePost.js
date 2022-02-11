@@ -35,7 +35,7 @@ const TypeSwichButton = ({ selected, onClick, type }) => {
     <TouchableOpacity
       style={[
         styles.typeButton,
-        type === 'link' ? styles.typeButtonRight : styles.typeButtonLeft,
+        type === 'photo' ? styles.typeButtonRight : styles.typeButtonLeft,
         selected === type ? { backgroundColor: colors.blue } : '',
         { borderColor: colors.border }
       ]}
@@ -125,7 +125,7 @@ const CreatePost = () => {
           setIsLoading(false)
         }}
         validationSchema={Yup.object({
-          type: Yup.mixed().oneOf(['text', 'link']),
+          type: Yup.mixed().oneOf(['text', 'photo']),
           category: Yup.string().required('Required'),
           title: Yup.string()
             .required('Required')
@@ -134,7 +134,8 @@ const CreatePost = () => {
             is: 'text',
             then: Yup.string()
               .required('Required')
-              .min(4, 'Must be at least 4 characters long')
+              .min(4, 'Must be at least 4 characters long'),
+            otherwise: Yup.string().min(4, 'Must be at least 4 characters long')
           }),
           url: Yup.string().when('type', {
             is: 'text',
@@ -173,7 +174,7 @@ const CreatePost = () => {
             </View>
             <TypeSwichContainer>
               <TypeSwichButton selected={values.type} onClick={setFieldValue} type="text" />
-              <TypeSwichButton selected={values.type} onClick={setFieldValue} type="link" />
+              <TypeSwichButton selected={values.type} onClick={setFieldValue} type="photo" />
             </TypeSwichContainer>
             <View style={styles.flexRow}>
               <Text style={[styles.formLabel, { color: colors.text }]}>Category</Text>
@@ -201,7 +202,7 @@ const CreatePost = () => {
               onBlur={handleBlur('title')}
             />
 
-            {values.type === 'link' ? (
+            {values.type === 'photo' ? (
               <>
                 <View style={styles.flexRow}>
                   <Text style={[styles.formLabel, { color: colors.text }]}>Photo</Text>

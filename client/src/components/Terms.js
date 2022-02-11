@@ -9,7 +9,7 @@ import AsyncStorage from '@react-native-community/async-storage'
 
 const { width, height } = Dimensions.get('screen')
 
-export default function Terms({ visible, setVisible }) {
+export default function Terms({ visible, setHidden }) {
   const { colors } = useTheme()
   const [toggleCheckBox, setToggleCheckBox] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -19,7 +19,7 @@ export default function Terms({ visible, setVisible }) {
     setIsLoading(true)
     await AsyncStorage.setItem('terms', 'accepted')
     setIsLoading(false)
-    setVisible(false)
+    setHidden(true)
   }
 
   return (

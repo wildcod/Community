@@ -105,7 +105,7 @@ exports.delete = async (req, res, next) => {
 };
 
 const urlOrTextIsValid = (req, res, next) => {
-  if (req.body.type === 'link') {
+  if (req.body.type === 'photo') {
     const chain = body('url')
       .exists()
       .withMessage('is required')
@@ -148,7 +148,7 @@ exports.validate = [
     .exists()
     .withMessage('is required')
 
-    .isIn(['link', 'text'])
-    .withMessage('must be a link or text post'),
+    .isIn(['photo', 'text'])
+    .withMessage('must be a photo or text post'),
   urlOrTextIsValid
 ];

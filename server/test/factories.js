@@ -10,5 +10,5 @@ exports.validPost = (author, category) => ({
   url: faker.internet.url(),
   category,
   author,
-  type: 'link'
+  type: 'photo'
 });

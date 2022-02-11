@@ -143,7 +143,7 @@ const Post = ({
       >
         {title}
       </Text>
-      {type === 'link' ? (
+      {type === 'photo' ? (
         <TouchableWithoutFeedback onPress={() => Linking.openURL(url)}>
           <View>
             <Image source={{ uri: url }} style={{ width: 200, height: 200 }} resizeMode="contain" />
@@ -155,10 +155,10 @@ const Post = ({
           style={[
             styles.regularFont,
             { color: colors.text },
-            type === 'link' && route.name === 'PostDetail' && styles.link
+            type === 'photo' && route.name === 'PostDetail' && styles.link
           ]}
           onPress={() =>
-            route.name === 'PostDetail' && type === 'link'
+            route.name === 'PostDetail' && type === 'photo'
               ? Linking.openURL(url)
               : navigation.navigate('PostDetail', { postId, category, comments })
           }

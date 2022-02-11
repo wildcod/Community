@@ -40,7 +40,7 @@ const postSchema = new Schema({
   comments: [commentSchema],
   created: { type: Date, default: Date.now },
   views: { type: Number, default: 0 },
-  type: { type: String, default: 'link', required: true },
+  type: { type: String, default: 'photo', required: true },
   text: { type: String },
   inRoom: { type: String },
   swap: { type: Boolean }
