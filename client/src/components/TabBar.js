@@ -1,3 +1,4 @@
+import Clipboard from '@react-native-clipboard/clipboard'
 import { useTheme } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
 import {
@@ -23,6 +24,13 @@ function TabBar({ state, descriptors, navigation }) {
   const [showCreateRoom, setShowCreateRoom] = useState(false)
   const [rooms, setRooms] = useState([])
   const [loading, setLoading] = useState(false)
+
+  const [tapped, setTapped] = useState(false)
+
+  const handleCopy = () => {
+    Clipboard.setString(`app.community://room/invite/${activeRoom.id}`)
+    setTapped(true)
+  }
 
   useEffect(() => {
     getRoomsData()
@@ -90,6 +98,14 @@ function TabBar({ state, descriptors, navigation }) {
         >
           <Image style={[styles.avatar]} source={{ uri: activeRoom.avatar }} />
           <Text style={{ color: colors.text }}>{activeRoom.name}</Text>
+          <TouchableOpacity
+            onPress={tapped ? () => {} : handleCopy}
+            style={{ position: 'absolute', right: 50 }}
+          >
+            <Text style={{ color: colors.primary }}>
+              {tapped ? 'Copied!' : 'Tap the link to copy'}
+            </Text>
+          </TouchableOpacity>
           <TouchableOpacity
             onPress={() => setActiveRoom(null)}
             style={{ position: 'absolute', right: 10 }}
