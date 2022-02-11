@@ -136,7 +136,7 @@ function RootScreen() {
         backgroundColor: theme === 'light' ? DefaultTheme.colors.bgColor : DarkTheme.colors.bgColor
       }}
     >
-      <Terms visible={!accepted} />
+      <Terms visible={!accepted} setVisible={setAccepted} />
       <NavigationContainer linking={linking} theme={theme === 'light' ? DefaultTheme : DarkTheme}>
         <RootStack.Navigator
           screenOptions={{

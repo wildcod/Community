@@ -1,5 +1,13 @@
 import React from 'react'
-import { StyleSheet, View, Text, TouchableOpacity, Linking } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  Linking,
+  Image,
+  TouchableWithoutFeedback
+} from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useNavigation, useTheme, useRoute } from '@react-navigation/native'
 import moment from 'moment'
@@ -135,21 +143,30 @@ const Post = ({
       >
         {title}
       </Text>
-      <Text
-        numberOfLines={route.name === 'PostDetail' ? 10000 : 10}
-        style={[
-          styles.regularFont,
-          { color: colors.text },
-          type === 'link' && route.name === 'PostDetail' && styles.link
-        ]}
-        onPress={() =>
-          route.name === 'PostDetail' && type === 'link'
-            ? Linking.openURL(url)
-            : navigation.navigate('PostDetail', { postId, category, comments })
-        }
-      >
-        {type === 'link' ? url : text}
-      </Text>
+      {type === 'link' ? (
+        <TouchableWithoutFeedback onPress={() => Linking.openURL(url)}>
+          <View>
+            <Image source={{ uri: url }} style={{ width: 200, height: 200 }} resizeMode="contain" />
+          </View>
+        </TouchableWithoutFeedback>
+      ) : (
+        <Text
+          numberOfLines={route.name === 'PostDetail' ? 10000 : 10}
+          style={[
+            styles.regularFont,
+            { color: colors.text },
+            type === 'link' && route.name === 'PostDetail' && styles.link
+          ]}
+          onPress={() =>
+            route.name === 'PostDetail' && type === 'link'
+              ? Linking.openURL(url)
+              : navigation.navigate('PostDetail', { postId, category, comments })
+          }
+        >
+          {text}
+        </Text>
+      )}
+
       <View style={styles.bottomContainer}>
         <View style={styles.centerAlign}>
           <TouchableOpacity onPress={() => (isUpVoted() ? unVote() : upVote())}>

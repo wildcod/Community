@@ -19,6 +19,7 @@ export default function Terms({ visible, setVisible }) {
     setIsLoading(true)
     await AsyncStorage.setItem('terms', 'accepted')
     setIsLoading(false)
+    setVisible(false)
   }
 
   return (

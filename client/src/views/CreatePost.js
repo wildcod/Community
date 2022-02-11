@@ -8,7 +8,8 @@ import {
   ScrollView,
   ActivityIndicator,
   Animated,
-  Switch
+  Switch,
+  Image
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from '@react-navigation/native'
@@ -20,6 +21,8 @@ import * as Yup from 'yup'
 import { Plus } from '../components/icons'
 import CategoryPicker from '../components/CategoryPicker'
 import { RoomContext } from '../context/roomContext'
+import ImagePicker from 'react-native-image-crop-picker'
+import uploadImage from '../utils/uploadImage'
 
 const TypeSwichContainer = ({ children }) => {
   return <View style={styles.typeContainer}>{children}</View>
@@ -87,9 +90,30 @@ const CreatePost = () => {
         onSubmit={async (values, { setStatus, resetForm }) => {
           setIsLoading(true)
           try {
-            const payload = activeRoom
-              ? { ...values, inRoom: activeRoom.id, swap: swapEnabled }
-              : { ...values, swap: swapEnabled }
+            let payload
+            if (values.url.length) {
+              const uploadImageResponse = await uploadImage(values.url)
+              console.log('uplodaImageResponse', uploadImageResponse)
+              if (uploadImageResponse.err) return err
+
+              payload = activeRoom
+                ? {
+                    ...values,
+                    inRoom: activeRoom.id,
+                    swap: swapEnabled,
+                    url: uploadImageResponse.url
+                  }
+                : { ...values, swap: swapEnabled, url: uploadImageResponse.url }
+            } else {
+              payload = activeRoom
+                ? {
+                    ...values,
+                    inRoom: activeRoom.id,
+                    swap: swapEnabled
+                  }
+                : { ...values, swap: swapEnabled }
+            }
+
             console.log('payload', payload)
             await axios.post('posts', payload)
             resetForm({ ...values, type: 'text' })
@@ -113,7 +137,7 @@ const CreatePost = () => {
               .min(4, 'Must be at least 4 characters long')
           }),
           url: Yup.string().when('type', {
-            is: 'link',
+            is: 'text',
             then: Yup.string()
               .required('Required')
               .url('Invalid Url')
@@ -165,6 +189,7 @@ const CreatePost = () => {
                 <Text style={styles.errorMessage}>{errors.title}</Text>
               )}
             </View>
+
             <TextInput
               style={[
                 styles.textInput,
@@ -179,12 +204,34 @@ const CreatePost = () => {
             {values.type === 'link' ? (
               <>
                 <View style={styles.flexRow}>
-                  <Text style={[styles.formLabel, { color: colors.text }]}>Url</Text>
+                  <Text style={[styles.formLabel, { color: colors.text }]}>Photo</Text>
                   {touched.url && errors.url && (
                     <Text style={styles.errorMessage}>{errors.url}</Text>
                   )}
                 </View>
-                <TextInput
+                {values.url ? (
+                  <Image source={{ uri: values.url }} style={styles.image} />
+                ) : (
+                  <TouchableOpacity
+                    onPress={() => {
+                      try {
+                        ImagePicker.openPicker({
+                          width: 550,
+                          height: 550,
+                          cropping: true,
+                          multiple: false
+                        }).then(async image => {
+                          setFieldValue('url', image.path)
+                        })
+                      } catch (err) {
+                        console.log('error picking images', err)
+                      }
+                    }}
+                  >
+                    <Text style={[styles.formLabel, { color: colors.primary }]}>Choose photo</Text>
+                  </TouchableOpacity>
+                )}
+                {/* <TextInput
                   style={[
                     styles.textInput,
                     { borderColor: colors.border, color: colors.text },
@@ -194,7 +241,7 @@ const CreatePost = () => {
                   value={values.url}
                   onChangeText={handleChange('url')}
                   onBlur={handleBlur('url')}
-                />
+                /> */}
               </>
             ) : (
               <>
@@ -325,6 +372,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     padding: 10,
     borderRadius: 10
+  },
+  image: {
+    alignSelf: 'center',
+    width: 200,
+    height: 200
   }
 })
 
