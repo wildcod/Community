@@ -4,7 +4,6 @@ import {
   ActivityIndicator,
   Image,
   Keyboard,
-  Modal,
   StatusBar,
   StyleSheet,
   Text,
@@ -23,6 +22,7 @@ import Clipboard from '@react-native-clipboard/clipboard'
 import { AuthContext } from '../context/authContext'
 import AsyncStorage from '@react-native-community/async-storage'
 import uploadImage from '../utils/uploadImage'
+import Modal from 'react-native-modal'
 
 const _topics = []
 for (var i = 0; i < 7; i++) _topics.push('')
@@ -126,13 +126,7 @@ export default function CreateRoom({ visible, setVisible }) {
   )
 
   return (
-    <Modal
-      visible={visible}
-      animationType="slide"
-      presentationStyle="fullScreen"
-      style={[styles.modal, { backgroundColor: colors.background }]}
-      statusBarTranslucent={true}
-    >
+    <Modal isVisible={visible} style={[styles.modal, { backgroundColor: colors.background }]}>
       <StatusBar backgroundColor={colors.background} />
 
       <TouchableOpacity
@@ -230,6 +224,7 @@ const RoomCreated = ({ link }) => {
 const styles = StyleSheet.create({
   modal: {
     flex: 1,
+    margin: 0,
     paddingVertical: '20%'
   },
   avatar: {
