@@ -76,6 +76,8 @@ const Home = ({ navigation }) => {
       if (url) {
         const type = url.split('/').length > 2 && url.split('/').slice(-2)[0]
         const id = url.split('/').slice(-1)[0]
+        // test app.community://room/invite/6209fd044bbafe2f8210f61c
+
         if (type === 'invite') {
           console.log('invite', id, authState && authState.userInfo && authState.userInfo.rooms)
           if (authState && authState.userInfo && authState.userInfo.rooms.indexOf(id) !== -1) return
@@ -97,7 +99,7 @@ const Home = ({ navigation }) => {
         barStyle={theme === 'light' ? 'dark-content' : 'light-content'}
         backgroundColor={colors.background}
       />
-      <JoinRoom visible={true} setVisible={setShowJoinRoom} />
+      <JoinRoom visible={showJoinRoom} setVisible={setShowJoinRoom} />
       {postData ? (
         <FlatList
           data={postData}

@@ -50,6 +50,7 @@ export default function JoinRoom({ visible, setVisible }) {
     const id = _url && _url.split('/').slice(-1)[0]
     const response = await instanceAxios.get(`room/${id}`)
     const respnoseData = await response.data
+    console.log('room data', respnoseData)
     if (respnoseData.status === 'error') return
     setRoom(respnoseData.data)
   }
@@ -73,8 +74,9 @@ export default function JoinRoom({ visible, setVisible }) {
 
   return (
     <Modal
-    isVisible={visible}
-      style={[styles.modal, { backgroundColor: colors.background }]}
+    isVisible={true}
+    
+      style={[styles.modal, { backgroundColor: colors.background, }]}
     >
       <StatusBar backgroundColor={colors.background} />
 
@@ -108,6 +110,8 @@ const styles = StyleSheet.create({
   modal: {
     flex: 1,
     margin: 0,
+    height: '100%',
+    width: '100%',
     paddingVertical: '20%'
   },
   avatar: {
