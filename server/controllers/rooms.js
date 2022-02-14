@@ -7,6 +7,12 @@ exports.create = async (req, res) => {
     const data = await req.body;
     const room = await Room.create(data.room);
     const user = await User.findById(data.userId);
+    if (user.rooms && user.rooms.indexOf(room._id) !== -1)
+      return res.send({
+        status: 'success',
+        message: 'Created room successfully',
+        data: room
+      });
     user.rooms ? user.rooms.push(room._id) : (user.rooms = [room._id]);
     await user.save();
     res.send({
