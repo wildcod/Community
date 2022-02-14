@@ -136,10 +136,9 @@ const SignUp = ({ navigation }) => {
                     ) : (
                       <Plus color={colors.text} />
                     )}
-                    {avatarError && <Text style={styles.errorMessage}>{avatarError}</Text>}
                   </View>
                 </TouchableWithoutFeedback>
-
+                {avatarError && <Text style={styles.errorMessage}>{avatarError}</Text>}
                 {!!status && <Text style={styles.status}>{status}</Text>}
                 {touched.username && errors.username && (
                   <Text style={styles.errorMessage}>{errors.username}</Text>
