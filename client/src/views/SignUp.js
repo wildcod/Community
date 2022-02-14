@@ -132,7 +132,7 @@ const SignUp = ({ navigation }) => {
                         source={{ uri: avatar }}
                       />
                     ) : (
-                      <Plus color="#fff" />
+                      <Plus color={colors.text} />
                     )}
                   </View>
                 </TouchableWithoutFeedback>

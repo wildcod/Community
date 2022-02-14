@@ -155,7 +155,7 @@ export default function CreateRoom({ visible, setVisible }) {
                     source={{ uri: avatar }}
                   />
                 ) : (
-                  <Plus color="#fff" />
+                  <Plus color={colors.text} />
                 )}
               </View>
             </TouchableWithoutFeedback>
