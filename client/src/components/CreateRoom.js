@@ -42,11 +42,11 @@ export default function CreateRoom({ visible, setVisible }) {
 
   useEffect(() => {
     return () => {
-      // setCreated(false)
-      // setName('')
-      // setAvatar('')
-      // setTopics(_topics)
-      // setLink(null)
+      setCreated(false)
+      setName('')
+      setAvatar('')
+      setTopics(_topics)
+      setLink(null)
     }
   }, [])
 
@@ -131,7 +131,7 @@ export default function CreateRoom({ visible, setVisible }) {
 
       <TouchableOpacity
         onPress={() => setVisible(false)}
-        style={{ position: 'absolute', right: 15, top: '5%', zIndex: 1000 }}
+        style={{ position: 'absolute', right: 15, top: '10%', zIndex: 1000 }}
       >
         <Text style={{ color: colors.primary }}>Close</Text>
       </TouchableOpacity>
