@@ -24,6 +24,12 @@ export default function JoinRoom({ visible, setVisible }) {
   const [loading, setLoading] = useState(false)
   const [url, setUrl] = useState('')
 
+//   useEffect(() => {
+// console.log(
+//   'visible', visible
+// )
+//   },[visible])
+
   useEffect(() => {
     console.log('Join Room')
     Linking.getInitialURL().then(_url => {
@@ -73,13 +79,13 @@ export default function JoinRoom({ visible, setVisible }) {
   }
 
   return (
-    <Modal isVisible={true} style={{ margin: 0 }}>
+    <Modal isVisible={visible}  animationIn='slideInUp'  style={{ margin: 0 }}>
       <View style={[styles.modal, { backgroundColor: colors.background }]}>
         <StatusBar backgroundColor={colors.background} />
 
         <TouchableOpacity
           onPress={() => setVisible(false)}
-          style={{ position: 'absolute', right: 15, top: '5%', zIndex: 1000 }}
+          style={{ position: 'absolute', right: 15, top: '10%', zIndex: 1000 }}
         >
           <Text style={{ color: colors.primary }}>Close</Text>
         </TouchableOpacity>

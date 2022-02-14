@@ -83,6 +83,7 @@ const Home = ({ navigation }) => {
           if (authState && authState.userInfo && authState.userInfo.rooms.indexOf(id) !== -1) return
           console.log('setShowJoinRoom')
           setShowJoinRoom(true)
+          console.log('showJoinRoom set to true')
         }
       }
     })

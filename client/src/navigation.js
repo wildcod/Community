@@ -117,7 +117,7 @@ function MyTabs({ navigation }) {
 
 function RootScreen() {
   const { theme } = React.useContext(ThemeContext)
-  const [accepted, setAccepted] = React.useState(false)
+  const [accepted, setAccepted] = React.useState(true)
 
   const linking = {
     prefixes: ['https://app.community.client.com']
