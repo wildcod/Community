@@ -37,7 +37,8 @@ function TabBar({ state, descriptors, navigation }) {
   }, [authState])
 
   const getRoomsData = async () => {
-    if (!authState.userInfo || !authState.userInfo.rooms || !authState.userInfo.rooms.length) return
+    if (!authState.userInfo || !authState.userInfo.rooms || !authState.userInfo.rooms.length)
+      return setRooms([])
     const response = await instanceAxios.get(
       `rooms/avatar?ids=${authState.userInfo.rooms.join(',')}`
     )
