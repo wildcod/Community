@@ -68,7 +68,7 @@ const Tile = ({ item, navigation }) => {
       payload,
       [item.fcmToken],
       item.username,
-      `${item.username} sent you a friend request`
+      `${authState.userInfo.username} sent you a friend request`
     )
   }
 

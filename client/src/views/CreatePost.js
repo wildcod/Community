@@ -88,6 +88,7 @@ const CreatePost = () => {
           text: ''
         }}
         onSubmit={async (values, { setStatus, resetForm }) => {
+          console.log('onSubmit', values)
           setIsLoading(true)
           try {
             let payload
@@ -120,6 +121,7 @@ const CreatePost = () => {
             setMessage('Successfully Created!')
             fadeIn()
           } catch (error) {
+            console.log('error', error)
             setStatus(error.response.data.message)
           }
           setIsLoading(false)
@@ -138,7 +140,7 @@ const CreatePost = () => {
             otherwise: Yup.string().min(4, 'Must be at least 4 characters long')
           }),
           url: Yup.string().when('type', {
-            is: 'text',
+            is: 'photo',
             then: Yup.string()
               .required('Required')
               .url('Invalid Url')
@@ -272,7 +274,10 @@ const CreatePost = () => {
             <View style={styles.buttonContainer}>
               <TouchableOpacity
                 style={[styles.submitButton, { backgroundColor: colors.blue }]}
-                onPress={handleSubmit}
+                onPress={() => {
+                  console.log('handleSubmit')
+                  handleSubmit()
+                }}
               >
                 {isLoading ? (
                   <ActivityIndicator size="small" color="white" />
