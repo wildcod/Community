@@ -10,10 +10,12 @@ import { ThemeContext } from '../context/themeSwichContext'
 import { LogOut, Moon, Sun } from '../components/icons'
 import Post from '../components/Post'
 import PostLoader from '../components/PostLoader'
+import { RoomContext } from '../context/roomContext'
 
 const HeaderComponent = ({ username, postCount }) => {
   const { signOut, authState } = React.useContext(AuthContext)
   const { theme, changeTheme } = React.useContext(ThemeContext)
+  const { activeRoom, setActiveRoom } = useContext(RoomContext)
   const { colors } = useTheme()
   const navigation = useNavigation()
 
@@ -43,6 +45,7 @@ const HeaderComponent = ({ username, postCount }) => {
             style={styles.infoBox}
             onPress={() => {
               signOut()
+              if (activeRoom) setActiveRoom(null)
               navigation.navigate('Home')
             }}
           >
