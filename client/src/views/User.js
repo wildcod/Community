@@ -15,7 +15,7 @@ import { RoomContext } from '../context/roomContext'
 const HeaderComponent = ({ username, postCount }) => {
   const { signOut, authState } = React.useContext(AuthContext)
   const { theme, changeTheme } = React.useContext(ThemeContext)
-  const { activeRoom, setActiveRoom } = useContext(RoomContext)
+  const { activeRoom, setActiveRoom } = React.useContext(RoomContext)
   const { colors } = useTheme()
   const navigation = useNavigation()
 
