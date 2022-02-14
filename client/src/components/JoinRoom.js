@@ -32,6 +32,7 @@ export default function JoinRoom({ visible, setVisible }) {
 
   useEffect(() => {
     const id = url.split('/').slice(-1)[0]
+    console.log('id', id, 'authState', authState);
     if (
       authState &&
       authState.userInfo &&
