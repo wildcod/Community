@@ -123,6 +123,8 @@ target 'client' do
     "RCTBridgeModuleNameForClass(strongModule))", "RCTBridgeModuleNameForClass(Class(strongModule)))")
     find_and_replace("Pods/RCT-Folly/folly/synchronization/DistributedMutex-inl.h",
           "  atomic_notify_one(state);", "  folly::atomic_notify_one(state);")
+    find_and_replace("../node_modules/react-native/Libraries/Image/RCTUIImageViewAnimated.m",
+              "_currentFrame.CGImage;","_currentFrame.CGImage ;} else { [super displayLayer:layer];")
   end
 end
 
