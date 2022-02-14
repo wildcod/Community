@@ -77,7 +77,9 @@ const Home = ({ navigation }) => {
         const type = url.split('/').length > 2 && url.split('/').slice(-2)[0]
         const id = url.split('/').slice(-1)[0]
         if (type === 'invite') {
+          console.log('invite', id, authState && authState.userInfo && authState.userInfo.rooms)
           if (authState && authState.userInfo && authState.userInfo.rooms.indexOf(id) !== -1) return
+          console.log('setShowJoinRoom')
           setShowJoinRoom(true)
         }
       }
@@ -95,7 +97,7 @@ const Home = ({ navigation }) => {
         barStyle={theme === 'light' ? 'dark-content' : 'light-content'}
         backgroundColor={colors.background}
       />
-      {showJoinRoom && <JoinRoom visible={showJoinRoom} setVisible={setShowJoinRoom} />}
+      <JoinRoom visible={true} setVisible={setShowJoinRoom} />
       {postData ? (
         <FlatList
           data={postData}

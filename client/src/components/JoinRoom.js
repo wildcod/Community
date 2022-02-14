@@ -4,7 +4,6 @@ import React, { useContext, useEffect, useState } from 'react'
 import {
   ActivityIndicator,
   Linking,
-  Modal,
   StatusBar,
   StyleSheet,
   Text,
@@ -15,15 +14,18 @@ import {
 import { AuthContext } from '../context/authContext'
 import instanceAxios from '../utils/fetcher'
 import Button from './Button'
+import Modal from 'react-native-modal'
 
 export default function JoinRoom({ visible, setVisible }) {
   const { authState, setAuthState } = useContext(AuthContext)
   const { colors } = useTheme()
   const [room, setRoom] = useState({})
+  const [alreadyJoined, setAlreadyJoined] = useState(false);
   const [loading, setLoading] = useState(false)
   const [url, setUrl] = useState('')
 
   useEffect(() => {
+    console.log('Join Room')
     Linking.getInitialURL().then(_url => {
       setUrl(_url)
       getData(_url)
@@ -31,19 +33,21 @@ export default function JoinRoom({ visible, setVisible }) {
   }, [])
 
   useEffect(() => {
-    const id = url.split('/').slice(-1)[0]
+    const id = url && url.split('/').slice(-1)[0]
     console.log('id', id, 'authState', authState);
     if (
       authState &&
       authState.userInfo &&
+      url && 
       url.length &&
       authState.userInfo.rooms.indexOf(id) !== -1
     )
-      setVisible(false)
+    {  setAlreadyJoined(true)}
+    
   }, [authState.userInfo, url])
 
   const getData = async _url => {
-    const id = _url.split('/').slice(-1)[0]
+    const id = _url && _url.split('/').slice(-1)[0]
     const response = await instanceAxios.get(`room/${id}`)
     const respnoseData = await response.data
     if (respnoseData.status === 'error') return
@@ -51,6 +55,7 @@ export default function JoinRoom({ visible, setVisible }) {
   }
 
   const handleJoinRoom = async () => {
+    if(alreadyJoined) return
     setLoading(true)
     const response = await instanceAxios.post(
       `room/join?userId=${authState.userInfo.id}&roomId=${room.id}`
@@ -58,6 +63,7 @@ export default function JoinRoom({ visible, setVisible }) {
     const responseData = await response.data
     console.log('responseData', responseData)
     setLoading(false)
+    setVisible(false)
     if (responseData.status === 'error') return
     const _user = responseData.data
     setAuthState({ ...authState, userInfo: _user })
@@ -67,11 +73,8 @@ export default function JoinRoom({ visible, setVisible }) {
 
   return (
     <Modal
-      visible={visible}
-      animationType="slide"
-      presentationStyle="fullScreen"
+    isVisible={visible}
       style={[styles.modal, { backgroundColor: colors.background }]}
-      statusBarTranslucent={true}
     >
       <StatusBar backgroundColor={colors.background} />
 
@@ -92,7 +95,7 @@ export default function JoinRoom({ visible, setVisible }) {
           {room.members && room.members.length} members
         </Text>
         <View style={{ marginTop: 30, height: 65 }}>
-          <Button onPress={handleJoinRoom} title="Join Room" bgColor={colors.signUpButton}>
+          <Button onPress={handleJoinRoom} title={alreadyJoined ? 'Already a member':"Join Room"} bgColor={colors.signUpButton}>
             {loading && <ActivityIndicator color="#fff" />}
           </Button>
         </View>
@@ -104,6 +107,7 @@ export default function JoinRoom({ visible, setVisible }) {
 const styles = StyleSheet.create({
   modal: {
     flex: 1,
+    margin: 0,
     paddingVertical: '20%'
   },
   avatar: {
