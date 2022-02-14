@@ -30,6 +30,7 @@ const SignUp = ({ navigation }) => {
   const { colors } = useTheme()
   const [isLoading, setIsLoading] = React.useState(false)
   const [avatar, setAvatar] = React.useState(undefined)
+  const [avatarError, setAvatarError] = React.useState(null)
 
   const handleImage = () => {
     try {
@@ -48,6 +49,7 @@ const SignUp = ({ navigation }) => {
 
   const onSubmit = async (values, { setStatus, resetForm }) => {
     try {
+      if (!avatar) setAvatarError('Please choose a profile image')
       const uploadImageResponse = await uploadImage(avatar)
       if (uploadImageResponse.err) return err
       const fcmToken = await fcmService.getToken()
@@ -134,6 +136,7 @@ const SignUp = ({ navigation }) => {
                     ) : (
                       <Plus color={colors.text} />
                     )}
+                    {avatarError && <Text style={styles.errorMessage}>{avatarError}</Text>}
                   </View>
                 </TouchableWithoutFeedback>
 
