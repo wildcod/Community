@@ -138,7 +138,9 @@ const SignUp = ({ navigation }) => {
                     )}
                   </View>
                 </TouchableWithoutFeedback>
-                {avatarError && <Text style={styles.errorMessage}>{avatarError}</Text>}
+                {avatarError && (
+                  <Text style={[styles.errorMessage, { textAlign: 'center' }]}>{avatarError}</Text>
+                )}
                 {!!status && <Text style={styles.status}>{status}</Text>}
                 {touched.username && errors.username && (
                   <Text style={styles.errorMessage}>{errors.username}</Text>
