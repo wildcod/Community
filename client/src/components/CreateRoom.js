@@ -115,9 +115,9 @@ export default function CreateRoom({ visible, setVisible }) {
           setActiveTopic('')
           setActiveTopicIndex(null)
         }}
-        style={[styles.input, { borderBottomColor: colors.border, color: colors.text }]}
+        style={[styles.input, { borderBottomColor: 'grey', color: colors.text }]}
         placeholder={`Topic ${index + 1}`}
-        placeholderTextColor={colors.border}
+        placeholderTextColor={'grey'}
       />
       {errors.includes(`topic${index}`) && (
         <Text style={[styles.error, { marginLeft: '10%' }]}>Please enter a valid topic name</Text>
@@ -158,9 +158,9 @@ export default function CreateRoom({ visible, setVisible }) {
             )}
 
             <TextInput
-              style={[styles.input, { borderBottomColor: colors.border, color: colors.text }]}
+              style={[styles.input, { borderBottomColor: 'grey', color: colors.text }]}
               placeholder="Room name"
-              placeholderTextColor={colors.border}
+              placeholderTextColor={'grey'}
               value={name}
               onChangeText={e => setName(e)}
             />
@@ -214,7 +214,7 @@ const RoomCreated = ({ link }) => {
       <TouchableOpacity onPress={handleCopy}>
         <Text style={{ color: colors.primary, marginTop: 20, textAlign: 'center' }}>{link}</Text>
       </TouchableOpacity>
-      <Text style={{ color: colors.border, fontSize: 10, marginTop: 10 }}>
+      <Text style={{ color: 'grey', fontSize: 10, marginTop: 10 }}>
         {tapped ? 'Copied!' : 'Tap the link to copy'}
       </Text>
     </View>
