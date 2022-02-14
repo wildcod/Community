@@ -20,7 +20,7 @@ export default function JoinRoom({ visible, setVisible }) {
   const { authState, setAuthState } = useContext(AuthContext)
   const { colors } = useTheme()
   const [room, setRoom] = useState({})
-  const [alreadyJoined, setAlreadyJoined] = useState(false);
+  const [alreadyJoined, setAlreadyJoined] = useState(false)
   const [loading, setLoading] = useState(false)
   const [url, setUrl] = useState('')
 
@@ -34,16 +34,16 @@ export default function JoinRoom({ visible, setVisible }) {
 
   useEffect(() => {
     const id = url && url.split('/').slice(-1)[0]
-    console.log('id', id, 'authState', authState);
+    console.log('id', id, 'authState', authState)
     if (
       authState &&
       authState.userInfo &&
-      url && 
+      url &&
       url.length &&
       authState.userInfo.rooms.indexOf(id) !== -1
-    )
-    {  setAlreadyJoined(true)}
-    
+    ) {
+      setAlreadyJoined(true)
+    }
   }, [authState.userInfo, url])
 
   const getData = async _url => {
@@ -56,7 +56,7 @@ export default function JoinRoom({ visible, setVisible }) {
   }
 
   const handleJoinRoom = async () => {
-    if(alreadyJoined) return
+    if (alreadyJoined) return
     setLoading(true)
     const response = await instanceAxios.post(
       `room/join?userId=${authState.userInfo.id}&roomId=${room.id}`
@@ -73,33 +73,35 @@ export default function JoinRoom({ visible, setVisible }) {
   }
 
   return (
-    <Modal
-    isVisible={true}
-    
-      style={[styles.modal, { backgroundColor: colors.background, }]}
-    >
-      <StatusBar backgroundColor={colors.background} />
-
-      <TouchableOpacity
-        onPress={() => setVisible(false)}
-        style={{ position: 'absolute', right: 15, top: '5%', zIndex: 1000 }}
-      >
-        <Text style={{ color: colors.primary }}>Close</Text>
-      </TouchableOpacity>
-
+    <Modal isVisible={true} style={{ margin: 0 }}>
       <View style={[styles.modal, { backgroundColor: colors.background }]}>
-        <Image
-          style={[styles.avatar, { backgroundColor: colors.bgColor }]}
-          source={{ uri: room.avatar }}
-        />
-        <Text style={[styles.heading, { color: colors.text }]}>{room.name}</Text>
-        <Text style={[{ color: colors.text, alignSelf: 'center' }]}>
-          {room.members && room.members.length} members
-        </Text>
-        <View style={{ marginTop: 30, height: 65 }}>
-          <Button onPress={handleJoinRoom} title={alreadyJoined ? 'Already a member':"Join Room"} bgColor={colors.signUpButton}>
-            {loading && <ActivityIndicator color="#fff" />}
-          </Button>
+        <StatusBar backgroundColor={colors.background} />
+
+        <TouchableOpacity
+          onPress={() => setVisible(false)}
+          style={{ position: 'absolute', right: 15, top: '5%', zIndex: 1000 }}
+        >
+          <Text style={{ color: colors.primary }}>Close</Text>
+        </TouchableOpacity>
+
+        <View style={[styles.modal, { backgroundColor: colors.background }]}>
+          <Image
+            style={[styles.avatar, { backgroundColor: colors.bgColor }]}
+            source={{ uri: room.avatar }}
+          />
+          <Text style={[styles.heading, { color: colors.text }]}>{room.name}</Text>
+          <Text style={[{ color: colors.text, alignSelf: 'center' }]}>
+            {room.members && room.members.length} members
+          </Text>
+          <View style={{ marginTop: 30, height: 65 }}>
+            <Button
+              onPress={handleJoinRoom}
+              title={alreadyJoined ? 'Already a member' : 'Join Room'}
+              bgColor={colors.signUpButton}
+            >
+              {loading && <ActivityIndicator color="#fff" />}
+            </Button>
+          </View>
         </View>
       </View>
     </Modal>
