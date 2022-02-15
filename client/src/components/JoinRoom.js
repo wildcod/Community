@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-community/async-storage'
-import { useTheme } from '@react-navigation/native'
+import { Link, useTheme } from '@react-navigation/native'
 import React, { useContext, useEffect, useState } from 'react'
 import {
   ActivityIndicator,
@@ -24,17 +24,21 @@ export default function JoinRoom({ visible, setVisible }) {
   const [loading, setLoading] = useState(false)
   const [url, setUrl] = useState('')
 
-//   useEffect(() => {
-// console.log(
-//   'visible', visible
-// )
-//   },[visible])
+  //   useEffect(() => {
+  // console.log(
+  //   'visible', visible
+  // )
+  //   },[visible])
 
   useEffect(() => {
     console.log('Join Room')
     Linking.getInitialURL().then(_url => {
       setUrl(_url)
       getData(_url)
+    })
+    Linking.addEventListener('url', data => {
+      setUrl(data.url)
+      getData(data.url)
     })
   }, [])
 
@@ -46,6 +50,7 @@ export default function JoinRoom({ visible, setVisible }) {
       authState.userInfo &&
       url &&
       url.length &&
+      authState.userInfo.rooms &&
       authState.userInfo.rooms.indexOf(id) !== -1
     ) {
       setAlreadyJoined(true)
@@ -79,7 +84,7 @@ export default function JoinRoom({ visible, setVisible }) {
   }
 
   return (
-    <Modal isVisible={visible}  animationIn='slideInUp'  style={{ margin: 0 }}>
+    <Modal isVisible={visible} animationIn="slideInUp" style={{ margin: 0 }}>
       <View style={[styles.modal, { backgroundColor: colors.background }]}>
         <StatusBar backgroundColor={colors.background} />
 

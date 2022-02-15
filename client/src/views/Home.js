@@ -79,6 +79,25 @@ const Home = ({ navigation }) => {
         // test app.community://room/invite/6209fd044bbafe2f8210f61c
 
         if (type === 'invite') {
+          if (
+            authState &&
+            authState.userInfo &&
+            authState.userInfo.rooms &&
+            authState.userInfo.rooms.indexOf(id) !== -1
+          )
+            return
+          setShowJoinRoom(true)
+        }
+      }
+    })
+    Linking.addEventListener('url', data => {
+      const { url } = data
+      if (url) {
+        const type = url.split('/').length > 2 && url.split('/').slice(-2)[0]
+        const id = url.split('/').slice(-1)[0]
+        // test app.community://room/invite/6209fd044bbafe2f8210f61c
+
+        if (type === 'invite') {
           console.log('invite', id, authState && authState.userInfo && authState.userInfo.rooms)
           if (authState && authState.userInfo && authState.userInfo.rooms.indexOf(id) !== -1) return
           console.log('setShowJoinRoom')
@@ -116,8 +135,13 @@ const Home = ({ navigation }) => {
             <Text style={[styles.empty, { color: colors.text }]}>Ups! Not found any post!</Text>
           }
           renderItem={({ item, index }) =>
-            (authState && authState.userInfo && authState.userInfo.reports && authState.userInfo.reports.indexOf(item.id) !== -1) ||
-            (authState && authState.userInfo && authState.userInfo.blocks &&
+            (authState &&
+              authState.userInfo &&
+              authState.userInfo.reports &&
+              authState.userInfo.reports.indexOf(item.id) !== -1) ||
+            (authState &&
+              authState.userInfo &&
+              authState.userInfo.blocks &&
               authState.userInfo.blocks.indexOf(item.author.id) !== -1) ? (
               <></>
             ) : (
