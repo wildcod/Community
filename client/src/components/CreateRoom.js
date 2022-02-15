@@ -178,7 +178,7 @@ export default function CreateRoom({ visible, setVisible }) {
               <View style={{ marginTop: 20 }}>
                 <Button
                   onPress={handleCreateRoom}
-                  title="Create Room"
+                  title="Create a Community"
                   bgColor={colors.signUpButton}
                 >
                   {loading && <ActivityIndicator color="#fff" />}
