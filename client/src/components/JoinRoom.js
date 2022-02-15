@@ -31,7 +31,7 @@ export default function JoinRoom({ visible, setVisible }) {
   //   },[visible])
 
   useEffect(() => {
-    console.log('Join Room')
+    console.log('Join Community')
     Linking.getInitialURL().then(_url => {
       setUrl(_url)
       getData(_url)
@@ -107,7 +107,7 @@ export default function JoinRoom({ visible, setVisible }) {
           <View style={{ marginTop: 30, height: 65 }}>
             <Button
               onPress={handleJoinRoom}
-              title={alreadyJoined ? 'Already a member' : 'Join Room'}
+              title={alreadyJoined ? 'Already a member' : 'Join Community'}
               bgColor={colors.signUpButton}
             >
               {loading && <ActivityIndicator color="#fff" />}

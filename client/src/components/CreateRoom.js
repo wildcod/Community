@@ -159,7 +159,7 @@ export default function CreateRoom({ visible, setVisible }) {
 
             <TextInput
               style={[styles.input, { borderBottomColor: 'grey', color: colors.text }]}
-              placeholder="Room name"
+              placeholder="Community name"
               placeholderTextColor={'grey'}
               value={name}
               onChangeText={e => setName(e)}
@@ -209,7 +209,7 @@ const RoomCreated = ({ link }) => {
       ]}
     >
       <Image style={styles.tick} source={require('../icons/tick-mark.png')} />
-      <Text style={[styles.heading, { color: colors.text }]}>Room created successfully!</Text>
+      <Text style={[styles.heading, { color: colors.text }]}>Community created successfully!</Text>
       <Text style={{ color: colors.text }}>Share this link to invite people</Text>
       <TouchableOpacity onPress={handleCopy}>
         <Text style={{ color: colors.primary, marginTop: 20, textAlign: 'center' }}>{link}</Text>
