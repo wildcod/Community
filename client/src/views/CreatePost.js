@@ -187,7 +187,7 @@ const CreatePost = () => {
             <CategoryPicker selectedCategory={values.category} setFieldValue={setFieldValue} />
 
             <View style={styles.flexRow}>
-              <Text style={[styles.formLabel, { color: colors.text }]}>Title</Text>
+              <Text style={[styles.formLabel, { color: colors.text }]}>Title / Topic</Text>
               {touched.title && errors.title && (
                 <Text style={styles.errorMessage}>{errors.title}</Text>
               )}
@@ -268,7 +268,7 @@ const CreatePost = () => {
               </>
             )}
             <View style={[styles.flexRow, { justifyContent: 'space-between' }]}>
-              <Text style={[styles.formLabel, { color: colors.text }]}>Swap</Text>
+              <Text style={[styles.formLabel, { color: colors.text }]}>Topic Suggestion</Text>
               <Switch onValueChange={toggleSwitch} value={swapEnabled} />
             </View>
             <View style={styles.buttonContainer}>
