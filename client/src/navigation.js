@@ -26,6 +26,7 @@ import { SafeAreaView } from 'react-native'
 import { useTheme } from '@react-navigation/native'
 import Terms from './components/Terms'
 import AsyncStorage from '@react-native-community/async-storage'
+//app.community//room/invite/6217ffa84bbafe2f821324e3
 
 const Tab = createBottomTabNavigator()
 const HomeStack = createStackNavigator()
